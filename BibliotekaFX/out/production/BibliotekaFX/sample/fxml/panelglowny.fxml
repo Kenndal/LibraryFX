@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="775.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.fxml.ControllerPanelGlowny">
+   <children>
+      <TabPane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="775.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <tabs>
+            <Tab text="Książki">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0">
+                     <children>
+                        <BorderPane layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="736.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <bottom>
+                              <VBox prefHeight="87.0" prefWidth="970.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Line endX="960.0" startX="-45.0" />
+                                    <Label text="Dodawanie książki">
+                                       <VBox.margin>
+                                          <Insets left="10.0" top="5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <HBox alignment="TOP_CENTER" prefHeight="51.0" prefWidth="926.0" spacing="5.0">
+                                       <children>
+                                          <TextField fx:id="textFieldTytul" prefHeight="31.0" prefWidth="255.0" promptText="Tytuł" />
+                                          <TextField fx:id="textFieldAutor" prefHeight="31.0" prefWidth="255.0" promptText="Autor" />
+                                          <TextField fx:id="textFieldGatunek" prefHeight="31.0" prefWidth="255.0" promptText="Gatunek" />
+                                          <Button fx:id="buttonDodajKsiazke" mnemonicParsing="false" onAction="#dodajKsiazke" prefHeight="31.0" prefWidth="150.0" text="Dodaj" />
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                                 <BorderPane.margin>
+                                    <Insets left="5.0" right="5.0" top="5.0" />
+                                 </BorderPane.margin>
+                              </VBox>
+                           </bottom>
+                           <center>
+                              <AnchorPane prefHeight="600.0" prefWidth="960.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <VBox prefHeight="599.0" prefWidth="980.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <TableView fx:id="tableKsiazki" prefHeight="603.0" prefWidth="960.0">
+                                             <columns>
+                                                <TableColumn fx:id="kolumnaTytul" prefWidth="192.0" text="Tytuł" />
+                                                <TableColumn fx:id="kolumnaAutor" prefWidth="192.0" text="Autor" />
+                                                <TableColumn fx:id="kolumnaGatunek" prefWidth="192.0" text="Gatunek" />
+                                                <TableColumn fx:id="kolumnaStan" prefWidth="192.0" text="Stan" />
+                                                <TableColumn fx:id="kolumnaIndeks" prefWidth="192.0" text="Indeks" />
+                                             </columns>
+                                          </TableView>
+                                          <HBox prefHeight="31.0" prefWidth="960.0">
+                                             <children>
+                                                <Button fx:id="wypozyczButton" mnemonicParsing="false" prefHeight="31.0" prefWidth="150.0" text="Wypożycz">
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" right="10.0" top="10.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                                <Button fx:id="edytujButton" mnemonicParsing="false" onAction="#handleEditBook" prefHeight="31.0" prefWidth="150.0" text="Edytuj">
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" right="10.0" top="10.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                                <Button fx:id="usunKsiazkeButton" mnemonicParsing="false" onAction="#delateBook" prefHeight="31.0" prefWidth="150.0" text="Usuń ">
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" right="10.0" top="10.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <BorderPane.margin>
+                                    <Insets left="20.0" right="20.0" />
+                                 </BorderPane.margin>
+                              </AnchorPane>
+                           </center>
+                           <top>
+                              <AnchorPane prefHeight="44.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <HBox prefHeight="31.0" prefWidth="960.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
+                                       <children>
+                                          <TextField fx:id="textFieldSzukajKsiazki" prefHeight="31.0" prefWidth="960.0" promptText="Szukaj...">
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </TextField>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </AnchorPane>
+                           </top>
+                        </BorderPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Czytelnicy">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0">
+                     <children>
+                        <BorderPane layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="736.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <bottom>
+                              <VBox prefHeight="87.0" prefWidth="970.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Line endX="960.0" startX="-45.0" />
+                                    <Label text="Dodawanie czytelnika">
+                                       <VBox.margin>
+                                          <Insets left="10.0" top="5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <HBox alignment="TOP_CENTER" prefHeight="51.0" prefWidth="926.0" spacing="5.0">
+                                       <children>
+                                          <TextField fx:id="textFieldImie" prefHeight="31.0" prefWidth="200.0" promptText="Imię" />
+                                          <TextField fx:id="textFieldNazwisko" prefHeight="31.0" prefWidth="200.0" promptText="Nazwisko" />
+                                          <TextField fx:id="textFieldData" prefHeight="31.0" prefWidth="200.0" promptText="DD-MM-RRRR" />
+                                          <TextField fx:id="textFieldTelefon" prefHeight="31.0" prefWidth="200.0" promptText="Telefon" />
+                                          <Button fx:id="buttonDodajCzytelnika" mnemonicParsing="false" onAction="#dodajKsiazke" prefHeight="31.0" prefWidth="126.0" text="Dodaj" />
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                                 <BorderPane.margin>
+                                    <Insets left="5.0" right="5.0" top="5.0" />
+                                 </BorderPane.margin>
+                              </VBox>
+                           </bottom>
+                           <center>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <VBox prefHeight="600.0" prefWidth="960.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <TableView fx:id="tableCzytelnicy" prefHeight="603.0" prefWidth="960.0">
+                                             <columns>
+                                                <TableColumn fx:id="kolumnaImie" prefWidth="240.0" text="Imię" />
+                                                <TableColumn fx:id="kolumnaNazwisko" prefWidth="240.0" text="Nazwisko" />
+                                                <TableColumn fx:id="kolumnaIndeksCZ" prefWidth="240.0" text="Indeks Czytelnika" />
+                                                <TableColumn fx:id="kolumnaZaleglosci" prefWidth="240.0" text="Zaległości" />
+                                             </columns>
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                          </TableView>
+                                          <HBox prefHeight="31.0" prefWidth="960.0">
+                                             <children>
+                                                <Button fx:id="pokazSzczegolyButton" mnemonicParsing="false" prefHeight="31.0" prefWidth="150.0" text="Pokaż szczegóły">
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" right="10.0" top="10.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                                <Button fx:id="usunCzytelnikaButton" mnemonicParsing="false" prefHeight="31.0" prefWidth="150.0" text="Usuń">
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" right="10.0" top="10.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <BorderPane.margin>
+                                    <Insets left="20.0" right="20.0" />
+                                 </BorderPane.margin>
+                              </AnchorPane>
+                           </center>
+                           <top>
+                              <AnchorPane prefHeight="44.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <HBox prefHeight="31.0" prefWidth="960.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
+                                       <children>
+                                          <TextField fx:id="textFieldSzukajCzytelnika" prefHeight="31.0" prefWidth="960.0" promptText="Szukaj...">
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </TextField>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </AnchorPane>
+                           </top>
+                        </BorderPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
