@@ -1,1 +1,2 @@
 # LibraryFX
+JavaFX application
