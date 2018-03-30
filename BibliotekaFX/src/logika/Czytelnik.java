@@ -134,7 +134,7 @@ public class Czytelnik implements Serializable {
 
     public void wypisz_stan(){
         for(int i=0; i<getWypozyczone_ksiazki().size(); i++){
-            System.out.println(getWypozyczone_ksiazki().get(i).getNazwa()+ " " + getWypozyczone_ksiazki().get(i).getAutor()+ " " + getWypozyczone_ksiazki().get(i).getGatunek()+ " " + getWypozyczone_ksiazki().get(i).getIndeks());
+            System.out.println(getWypozyczone_ksiazki().get(i).getNazwa()+ " " + getWypozyczone_ksiazki().get(i).getAutor()+ " " + getWypozyczone_ksiazki().get(i).getGatunek()+ " " + getWypozyczone_ksiazki().get(i).getIndeks_ksiazki());
             System.out.print(getWypozyczone_ksiazki().get(i));
         }
     }

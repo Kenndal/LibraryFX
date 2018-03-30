@@ -20,7 +20,7 @@ public class Katalog implements Serializable {
 
     public void wypiszKsiazki(){
         for(Map.Entry<String,Ksiazka> entry : ksiazki.entrySet()){
-            System.out.println(entry.getValue().getNazwa()+ " " + entry.getValue().getAutor()+ " " + entry.getValue().getGatunek()+ " " + entry.getValue().getIndeks()+ " " + entry.getValue().isStan());
+            System.out.println(entry.getValue().getNazwa()+ " " + entry.getValue().getAutor()+ " " + entry.getValue().getGatunek()+ " " + entry.getValue().getIndeks_ksiazki()+ " " + entry.getValue().isStan());
             System.out.println(entry.getValue());
         }
     }

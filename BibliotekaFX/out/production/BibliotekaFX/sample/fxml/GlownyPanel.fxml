@@ -33,7 +33,7 @@
                                           <TextField fx:id="textFieldTytul" prefHeight="31.0" prefWidth="255.0" promptText="Tytuł" />
                                           <TextField fx:id="textFieldAutor" prefHeight="31.0" prefWidth="255.0" promptText="Autor" />
                                           <TextField fx:id="textFieldGatunek" prefHeight="31.0" prefWidth="255.0" promptText="Gatunek" />
-                                          <Button fx:id="buttonDodajKsiazke" mnemonicParsing="false" onAction="#dodajKsiazke" prefHeight="31.0" prefWidth="150.0" text="Dodaj" />
+                                          <Button fx:id="buttonDodajKsiazke" mnemonicParsing="false" onAction="#handleAddBook" prefHeight="31.0" prefWidth="150.0" text="Dodaj" />
                                        </children>
                                        <opaqueInsets>
                                           <Insets />
@@ -67,7 +67,7 @@
                                           </TableView>
                                           <HBox prefHeight="31.0" prefWidth="960.0">
                                              <children>
-                                                <Button fx:id="wypozyczButton" mnemonicParsing="false" prefHeight="31.0" prefWidth="150.0" text="Wypożycz">
+                                                <Button fx:id="wypozyczButton" mnemonicParsing="false" onAction="#handleWypozyczenieKsiazki" prefHeight="31.0" prefWidth="150.0" text="Wypożycz">
                                                    <HBox.margin>
                                                       <Insets left="10.0" right="10.0" top="10.0" />
                                                    </HBox.margin>
@@ -132,7 +132,7 @@
                                           <TextField fx:id="textFieldNazwisko" prefHeight="31.0" prefWidth="200.0" promptText="Nazwisko" />
                                           <TextField fx:id="textFieldData" prefHeight="31.0" prefWidth="200.0" promptText="DD-MM-RRRR" />
                                           <TextField fx:id="textFieldTelefon" prefHeight="31.0" prefWidth="200.0" promptText="Telefon" />
-                                          <Button fx:id="buttonDodajCzytelnika" mnemonicParsing="false" onAction="#dodajKsiazke" prefHeight="31.0" prefWidth="126.0" text="Dodaj" />
+                                          <Button fx:id="buttonDodajCzytelnika" mnemonicParsing="false" prefHeight="31.0" prefWidth="126.0" text="Dodaj" />
                                        </children>
                                        <opaqueInsets>
                                           <Insets />

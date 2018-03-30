@@ -14,6 +14,7 @@ import logika.Czytelnik;
 import logika.Ksiazka;
 import sample.fxml.ControllerKsiazkaEditPanel;
 import sample.fxml.ControllerPanelGlowny;
+import sample.fxml.ControllerWypozyczeniePanel;
 import wyjatki.DodawanieException;
 
 import java.io.IOException;
@@ -82,7 +83,7 @@ public class MyApp extends Application implements Serializable {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MyApp.class.getResource("fxml/panelglowny.fxml"));
+            loader.setLocation(MyApp.class.getResource("fxml/GlownyPanel.fxml"));
             AnchorPane libraryOverView = (AnchorPane) loader.load();
 
             ControllerPanelGlowny controllerPanelGlowny = loader.getController();
@@ -127,6 +128,38 @@ public class MyApp extends Application implements Serializable {
             dialogStage.showAndWait();
 
             return controller.isOkClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public boolean showBookWypozyczenieDialog(Ksiazka ksiazka) {
+        try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MyApp.class.getResource("fxml/WypozyczeniePanel.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Wypożycz Książke");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the person into the controller.
+            ControllerWypozyczeniePanel controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setKsiazka(ksiazka);
+            controller.setBiblioteka(biblioteka);
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+
+            return controller.isWypozyczClicked();
         } catch (IOException e) {
             e.printStackTrace();
             return false;

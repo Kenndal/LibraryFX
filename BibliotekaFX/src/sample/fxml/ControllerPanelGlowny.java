@@ -1,6 +1,5 @@
 package sample.fxml;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -8,9 +7,9 @@ import logika.Biblioteka;
 import logika.Czytelnik;
 import logika.Ksiazka;
 import wyjatki.DodawanieException;
-import javafx.event.ActionEvent;
 import sample.MyApp;
 import wyjatki.UsuwanieException;
+
 
 public class ControllerPanelGlowny {
 
@@ -128,33 +127,16 @@ public class ControllerPanelGlowny {
     }
 
     @FXML
-     void dodajKsiazke(ActionEvent event) {
-        try {
-            biblioteka.dodajKsiazkeDoKatalogu(textFieldTytul.getText(),textFieldGatunek.getText(),textFieldGatunek.getText());
-            myApp.getKsiazkiData().add(biblioteka.getKatalog().getKsiazki().get(textFieldTytul));
-            textFieldTytul.setText("");
-            textFieldGatunek.setText("");
-            textFieldAutor.setText("");
-        } catch (DodawanieException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
      private void delateBook(){
         int selectIndex = tableKsiazki.getSelectionModel().getFocusedIndex();
+        Ksiazka selectedBook = tableKsiazki.getSelectionModel().getSelectedItem();
         try {
-            if(selectIndex < 0) {
+            if(selectedBook != null) {
                 biblioteka.skasujKsiazke(tableKsiazki.getItems().get(selectIndex).getNazwa());
-                tableKsiazki.getItems().remove(selectIndex);
+                myApp.getKsiazkiData().remove(selectedBook);
             }
             else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.initOwner(myApp.getPrimaryStage());
-                alert.setTitle("Uwaga!");
-                alert.setHeaderText("Nie wybrano książki do usunięcia.");
-                alert.setContentText("Proszę wybrać ksiażkę z tabeli.");
-                alert.showAndWait();
+                alert();
             }
         } catch (UsuwanieException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -168,26 +150,67 @@ public class ControllerPanelGlowny {
     @FXML
     private void handleEditBook(){
          Ksiazka selectedBook = tableKsiazki.getSelectionModel().getSelectedItem();
-         Ksiazka bookTemporary = selectedBook;
          if(selectedBook != null){
-             //myApp.getKsiazkiData().remove(selectedBook);
              boolean okClicked = myApp.showBookEditDialog(selectedBook);
              if(okClicked){
                  myApp.getKsiazkiData().remove(selectedBook);
                  myApp.getKsiazkiData().add(selectedBook);
              }
          }else {
-             // Nothing selected.
-             Alert alert = new Alert(Alert.AlertType.WARNING);
-             alert.initOwner(myApp.getPrimaryStage());
-             alert.setTitle("Uwaga");
-             alert.setHeaderText("Nie wybrano książki.");
-             alert.setContentText("Proszę najpierw wybrać książkę z tabeli.");
-
-             alert.showAndWait();
+                alert();
          }
-         bookTemporary = null;
     }
+
+    @FXML
+    private void handleWypozyczenieKsiazki(){
+        Ksiazka selectedBook = tableKsiazki.getSelectionModel().getSelectedItem();
+        if(selectedBook != null){
+            boolean okClicked = myApp.showBookWypozyczenieDialog(selectedBook);
+            if(okClicked){
+                myApp.getKsiazkiData().remove(selectedBook);
+                myApp.getKsiazkiData().add(selectedBook);
+                ObservableList<Czytelnik> czytelnicyData = myApp.getCzytelnicyData().sorted();
+                myApp.getCzytelnicyData().removeAll();
+                myApp.getCzytelnicyData().setAll(czytelnicyData);
+                /*
+                * Ten refresh czytelnicyTable jest raczej do poprawki bo odświerzam całość zamiast jednego czytelinka
+                * na razie działa ale ni optymalnie
+                */
+            }
+        }else {
+            alert();
+        }
+    }
+
+    @FXML
+    private void handleAddBook(){
+        try {
+            biblioteka.dodajKsiazkeDoKatalogu(textFieldTytul.getText(),textFieldGatunek.getText(),textFieldAutor.getText());
+            myApp.getKsiazkiData().add(biblioteka.getKatalog().getKsiazki().get(textFieldTytul.getText()));
+            textFieldTytul.clear();
+            textFieldGatunek.clear();
+            textFieldAutor.clear();
+        } catch (DodawanieException e) {
+            // Show the error message.
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initOwner(myApp.getPrimaryStage());
+            alert.setTitle("Uwaga!");
+            alert.setHeaderText("Żle wypełnione pole");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+    }
+
+    private void alert(){
+        // Nothing selected.
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.initOwner(myApp.getPrimaryStage());
+        alert.setTitle("Uwaga");
+        alert.setHeaderText("Nie wybrano książki.");
+        alert.setContentText("Proszę najpierw wybrać książkę z tabeli.");
+        alert.showAndWait();
+    }
+
 
 
 

@@ -140,7 +140,6 @@ public class Biblioteka implements Serializable {
         else
             throw new DodawanieException("Wypełnij pole indeks czytelnika!");
 
-        obserwator.informuj(); // odświerzenie jtable
     }
 
     public void zwrocKsiazke(String nazwaKsiazki, String indeks_czytelnika) {
@@ -197,6 +196,7 @@ public class Biblioteka implements Serializable {
                 doodczytu.close();
         }
     }
+
     // zapis Czytelnikow do pliku
     public void zapiszDoPlikuCzytelnicy(String nazwaPliku)throws IOException{
         ObjectOutputStream dozapisu = null;
@@ -211,6 +211,7 @@ public class Biblioteka implements Serializable {
                 dozapisu.close();
         }
     }
+
     // odczyt czytelnikow z pliku
     public void odczytCzytelnikowZPliku(String nazwaPliku)throws IOException,ClassNotFoundException{
         ObjectInputStream doodczytu=null;

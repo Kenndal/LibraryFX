@@ -47,10 +47,6 @@ public class Ksiazka implements Serializable {
         return stan;
     }
 
-    public String getIndeks() {
-        return indeks_ksiazki.toString();
-    }
-
     public StringProperty getNazwaProperty() {
         return nazwa;
     }

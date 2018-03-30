@@ -5,19 +5,21 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import logika.Biblioteka;
 import logika.Ksiazka;
 import wyjatki.DodawanieException;
+import wyjatki.SzukanieException;
 
-public class ControllerKsiazkaEditPanel {
-
-    @FXML
-    private Button anulujButton;
+public class ControllerWypozyczeniePanel {
 
     @FXML
-    private Button zapiszButton;
+    private TextField imieTextField;
 
     @FXML
     private TextField tytulTextField;
+
+    @FXML
+    private TextField nazwiskoTextField;
 
     @FXML
     private TextField autorTextField;
@@ -26,16 +28,19 @@ public class ControllerKsiazkaEditPanel {
     private TextField indeksTextField;
 
     @FXML
-    private TextField gatunekTextField;
+    private TextField indeksCzTextField;
 
     @FXML
-    private TextField dostepnoscTextField;
+    private Button wypozyczButton;
+
+    @FXML
+    private Button anulujButton;
+
 
     private Stage dialogStage;
-    private boolean okClicked = false;
+    private boolean wypozyczClicked = false;
     private Ksiazka ksiazka;
-
-
+    private Biblioteka biblioteka;
     @FXML
     private void initialize() {
     }
@@ -45,31 +50,29 @@ public class ControllerKsiazkaEditPanel {
         this.dialogStage = dialogStage;
     }
 
-
-    public void setKsiazka(Ksiazka ksiazka){
+    public void setKsiazka(Ksiazka ksiazka) {
         this.ksiazka = ksiazka;
         tytulTextField.setText(ksiazka.getNazwa());
         autorTextField.setText(ksiazka.getAutor());
-        gatunekTextField.setText(ksiazka.getGatunek());
         indeksTextField.setText(ksiazka.getIndeks_ksiazki());
-        dostepnoscTextField.setText(ksiazka.isStanString());
     }
 
-    // return true if the user clicked OK
-    public boolean isOkClicked() {
-        return okClicked;
+    public void setBiblioteka(Biblioteka biblioteka) {
+        this.biblioteka = biblioteka;
     }
 
+    // return true if the user clicked wypozycz
+    public boolean isWypozyczClicked() {
+        return wypozyczClicked;
+    }
 
     @FXML
     private void handleOK(){
         try {
-            ksiazka.setNazwa(tytulTextField.getText());
-            ksiazka.setAutor(autorTextField.getText());
-            ksiazka.setGatunek(autorTextField.getText());
-            okClicked = true;
+            biblioteka.wypozyczKsiazke(ksiazka.getNazwa(), indeksCzTextField.getText());
+            wypozyczClicked = true;
             dialogStage.close();
-        } catch (DodawanieException e) {
+        } catch (DodawanieException | SzukanieException e) {
             // Show the error message.
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.initOwner(dialogStage);
@@ -77,22 +80,14 @@ public class ControllerKsiazkaEditPanel {
             alert.setHeaderText("Żle wypełnione pole");
             alert.setContentText(e.getMessage());
             alert.showAndWait();
-            okClicked = false;
+            wypozyczClicked = false;
         }
-
     }
-
 
     @FXML
     private void handleCancel() {
         dialogStage.close();
     }
-
-
-
-
-
-
 
 
 
