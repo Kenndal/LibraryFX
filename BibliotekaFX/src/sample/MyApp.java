@@ -3,6 +3,7 @@ package sample;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -12,6 +13,7 @@ import javafx.stage.Stage;
 import logika.Biblioteka;
 import logika.Czytelnik;
 import logika.Ksiazka;
+import sample.fxml.ControllerCzytelnikPanel;
 import sample.fxml.ControllerKsiazkaEditPanel;
 import sample.fxml.ControllerPanelGlowny;
 import sample.fxml.ControllerWypozyczeniePanel;
@@ -28,8 +30,8 @@ public class MyApp extends Application implements Serializable {
     private Biblioteka biblioteka = new Biblioteka();
     private ObservableList<Ksiazka> ksiazkiData = FXCollections.observableArrayList();
     private ObservableList<Czytelnik> czytelnicyData = FXCollections.observableArrayList();
-
-
+    private FilteredList<Ksiazka> filteredDataBook = new FilteredList<>(ksiazkiData, p -> true);
+    private FilteredList<Czytelnik> filteredDataReader = new FilteredList<>(czytelnicyData, p -> true);
     @Override
     public void start(Stage primaryStage) {
 
@@ -46,7 +48,8 @@ public class MyApp extends Application implements Serializable {
             biblioteka.dodajKsiazkeDoKatalogu("kek","kek","kek");
             biblioteka.dodajKsiazkeDoKatalogu("kek1","kek1","kek1");
             biblioteka.dodajKsiazkeDoKatalogu("kek2","kek2","kek2");
-            biblioteka.dodaj_czytelnika("kek","kek","kek","kek");
+            biblioteka.dodaj_czytelnika("Pan Koala","Z Australii","10.10.2010","PanKoala@gmail.com");
+            biblioteka.getCzytelnicy().get(biblioteka.getCzytelnicy().size()-1).setZdjecie("koala.jpg");
             ksiazkiData.addAll(biblioteka.getKatalog().getKsiazki().values());
             czytelnicyData.addAll(biblioteka.getCzytelnicy());
 
@@ -54,6 +57,14 @@ public class MyApp extends Application implements Serializable {
             e.printStackTrace();
         }
 
+    }
+
+    public FilteredList<Ksiazka> getFilteredDataBook() {
+        return filteredDataBook;
+    }
+
+    public FilteredList<Czytelnik> getFilteredDataReader() {
+        return filteredDataReader;
     }
 
     public ObservableList<Ksiazka> getKsiazkiData() {
@@ -153,13 +164,46 @@ public class MyApp extends Application implements Serializable {
             // Set the person into the controller.
             ControllerWypozyczeniePanel controller = loader.getController();
             controller.setDialogStage(dialogStage);
-            controller.setKsiazka(ksiazka);
-            controller.setBiblioteka(biblioteka);
 
+            controller.setBiblioteka(biblioteka);
+            controller.setKsiazka(ksiazka);
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
 
             return controller.isWypozyczClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public boolean showCzytlenikDialog(Czytelnik czytelnik) {
+        try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MyApp.class.getResource("fxml/CzytelnikPanel.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Panel Czytelnika");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the person into the controller.
+            ControllerCzytelnikPanel controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setBiblioteka(biblioteka);
+            controller.setCzytelnik(czytelnik);
+
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+
+            return controller.isZamknijClicked();
         } catch (IOException e) {
             e.printStackTrace();
             return false;

@@ -106,7 +106,7 @@ public class Ksiazka implements Serializable {
 
 
     protected void doddaj_indeks_ksiazki(String indeks){
-        indeks_ksiazki= new SimpleStringProperty(indeks);;
+        indeks_ksiazki= new SimpleStringProperty(indeks);
     }
 
     public void wypozyczenie(){

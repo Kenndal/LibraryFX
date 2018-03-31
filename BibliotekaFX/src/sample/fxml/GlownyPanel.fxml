@@ -97,7 +97,7 @@
                                  <children>
                                     <HBox prefHeight="31.0" prefWidth="960.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                                        <children>
-                                          <TextField fx:id="textFieldSzukajKsiazki" prefHeight="31.0" prefWidth="960.0" promptText="Szukaj...">
+                                          <TextField fx:id="textFieldSzukajKsiazki" onKeyPressed="#searchingBook" prefHeight="31.0" prefWidth="960.0" promptText="Szukaj...">
                                              <HBox.margin>
                                                 <Insets />
                                              </HBox.margin>
@@ -131,8 +131,8 @@
                                           <TextField fx:id="textFieldImie" prefHeight="31.0" prefWidth="200.0" promptText="Imię" />
                                           <TextField fx:id="textFieldNazwisko" prefHeight="31.0" prefWidth="200.0" promptText="Nazwisko" />
                                           <TextField fx:id="textFieldData" prefHeight="31.0" prefWidth="200.0" promptText="DD-MM-RRRR" />
-                                          <TextField fx:id="textFieldTelefon" prefHeight="31.0" prefWidth="200.0" promptText="Telefon" />
-                                          <Button fx:id="buttonDodajCzytelnika" mnemonicParsing="false" prefHeight="31.0" prefWidth="126.0" text="Dodaj" />
+                                          <TextField fx:id="textFieldMail" prefHeight="31.0" prefWidth="200.0" promptText="E-mail" />
+                                          <Button fx:id="buttonDodajCzytelnika" mnemonicParsing="false" onAction="#handleAddReader" prefHeight="31.0" prefWidth="126.0" text="Dodaj" />
                                        </children>
                                        <opaqueInsets>
                                           <Insets />
@@ -168,12 +168,12 @@
                                           </TableView>
                                           <HBox prefHeight="31.0" prefWidth="960.0">
                                              <children>
-                                                <Button fx:id="pokazSzczegolyButton" mnemonicParsing="false" prefHeight="31.0" prefWidth="150.0" text="Pokaż szczegóły">
+                                                <Button fx:id="pokazSzczegolyButton" mnemonicParsing="false" onAction="#handleReader" prefHeight="31.0" prefWidth="150.0" text="Pokaż szczegóły">
                                                    <HBox.margin>
                                                       <Insets left="10.0" right="10.0" top="10.0" />
                                                    </HBox.margin>
                                                 </Button>
-                                                <Button fx:id="usunCzytelnikaButton" mnemonicParsing="false" prefHeight="31.0" prefWidth="150.0" text="Usuń">
+                                                <Button fx:id="usunCzytelnikaButton" mnemonicParsing="false" onAction="#delateReader" prefHeight="31.0" prefWidth="150.0" text="Usuń">
                                                    <HBox.margin>
                                                       <Insets left="10.0" right="10.0" top="10.0" />
                                                    </HBox.margin>
@@ -193,7 +193,7 @@
                                  <children>
                                     <HBox prefHeight="31.0" prefWidth="960.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                                        <children>
-                                          <TextField fx:id="textFieldSzukajCzytelnika" prefHeight="31.0" prefWidth="960.0" promptText="Szukaj...">
+                                          <TextField fx:id="textFieldSzukajCzytelnika" onKeyPressed="#searchingReader" prefHeight="31.0" prefWidth="960.0" promptText="Szukaj...">
                                              <HBox.margin>
                                                 <Insets />
                                              </HBox.margin>

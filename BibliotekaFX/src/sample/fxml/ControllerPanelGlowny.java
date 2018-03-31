@@ -1,6 +1,8 @@
 package sample.fxml;
 
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import logika.Biblioteka;
@@ -9,6 +11,8 @@ import logika.Ksiazka;
 import wyjatki.DodawanieException;
 import sample.MyApp;
 import wyjatki.UsuwanieException;
+
+import java.util.Optional;
 
 
 public class ControllerPanelGlowny {
@@ -74,7 +78,7 @@ public class ControllerPanelGlowny {
     private TextField textFieldTytul;
 
     @FXML
-    private TextField textFieldTelefon;
+    private TextField textFieldMail;
 
     @FXML
     private TableColumn<Czytelnik, String> kolumnaImie;
@@ -99,6 +103,9 @@ public class ControllerPanelGlowny {
 
     private MyApp myApp;
 
+    FilteredList<Ksiazka> filteredDataBook;
+    FilteredList<Czytelnik> filteredDataReader;
+
     @FXML
     private void initialize() {
         // Initialize the book table with the five columns.
@@ -113,6 +120,52 @@ public class ControllerPanelGlowny {
         kolumnaIndeksCZ.setCellValueFactory(cellData -> cellData.getValue().getIndeks_czytelnikaProperty());
         kolumnaZaleglosci.setCellValueFactory(cellData -> cellData.getValue().getPosiadanieKsiazekStringProperty());
 
+        // 2. Set the filter Predicate whenever the filter changes.
+        textFieldSzukajKsiazki.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredDataBook.setPredicate(ksiazka -> {
+                // If filter text is empty, display all persons.
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                // Compare filter text.
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (ksiazka.getNazwa().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Filter matches title.
+                } else if (ksiazka.getAutor().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Filter matches author.
+                }else if (ksiazka.getGatunek().toLowerCase().contains(lowerCaseFilter)){
+                    return true; // Filter type author.
+                }else if (ksiazka.getIndeks_ksiazki().toLowerCase().contains(lowerCaseFilter)){
+                    return true; //Filter index author.
+                }
+                return false; // Does not match.
+            });
+        });
+
+
+        textFieldSzukajCzytelnika.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredDataReader.setPredicate(czytelnik -> {
+                // If filter text is empty, display all persons.
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                // Compare filter text.
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (czytelnik.getImie().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Filter matches first name.
+                } else if (czytelnik.getNazwisko().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Filter matches last name.
+                }else if (czytelnik.getIndeks_czytelnika().toLowerCase().contains(lowerCaseFilter)){
+                    return true; // Filter matches index.
+                }else
+                return false; // Does not match.
+            });
+        });
+
 
     }
 
@@ -120,6 +173,9 @@ public class ControllerPanelGlowny {
         this.myApp = myApp;
         tableKsiazki.setItems(myApp.getKsiazkiData());
         tableCzytelnicy.setItems(myApp.getCzytelnicyData());
+        filteredDataBook = myApp.getFilteredDataBook();
+        filteredDataReader = myApp.getFilteredDataReader();
+
     }
 
     public void setBiblioteka(Biblioteka biblioteka) {
@@ -136,7 +192,7 @@ public class ControllerPanelGlowny {
                 myApp.getKsiazkiData().remove(selectedBook);
             }
             else {
-                alert();
+                alertToSelect();
             }
         } catch (UsuwanieException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -144,6 +200,7 @@ public class ControllerPanelGlowny {
             alert.setTitle("Uwaga!");
             alert.setHeaderText(e.getMessage());
             alert.setContentText("Proszę najpierw zwrócić książkę, a potem usunąć.");
+            alert.showAndWait();
         }
     }
 
@@ -155,9 +212,10 @@ public class ControllerPanelGlowny {
              if(okClicked){
                  myApp.getKsiazkiData().remove(selectedBook);
                  myApp.getKsiazkiData().add(selectedBook);
+                 myApp.getKsiazkiData().sorted();
              }
          }else {
-                alert();
+                alertToSelect();
          }
     }
 
@@ -167,18 +225,10 @@ public class ControllerPanelGlowny {
         if(selectedBook != null){
             boolean okClicked = myApp.showBookWypozyczenieDialog(selectedBook);
             if(okClicked){
-                myApp.getKsiazkiData().remove(selectedBook);
-                myApp.getKsiazkiData().add(selectedBook);
-                ObservableList<Czytelnik> czytelnicyData = myApp.getCzytelnicyData().sorted();
-                myApp.getCzytelnicyData().removeAll();
-                myApp.getCzytelnicyData().setAll(czytelnicyData);
-                /*
-                * Ten refresh czytelnicyTable jest raczej do poprawki bo odświerzam całość zamiast jednego czytelinka
-                * na razie działa ale ni optymalnie
-                */
+                refreshTable();
             }
         }else {
-            alert();
+            alertToSelect();
         }
     }
 
@@ -191,17 +241,95 @@ public class ControllerPanelGlowny {
             textFieldGatunek.clear();
             textFieldAutor.clear();
         } catch (DodawanieException e) {
-            // Show the error message.
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.initOwner(myApp.getPrimaryStage());
-            alert.setTitle("Uwaga!");
-            alert.setHeaderText("Żle wypełnione pole");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            alertToFillAllTextFields(e.getMessage());
         }
     }
 
-    private void alert(){
+    @FXML
+    private void handleAddReader(){
+        try {
+            biblioteka.dodaj_czytelnika(textFieldImie.getText(),textFieldNazwisko.getText(),textFieldData.getText(),textFieldMail.getText());
+            myApp.getCzytelnicyData().add(biblioteka.getCzytelnicy().get(biblioteka.getCzytelnicy().size()-1));
+            textFieldImie.clear();
+            textFieldNazwisko.clear();
+            textFieldData.clear();
+            textFieldMail.clear();
+        } catch (DodawanieException e) {
+            alertToFillAllTextFields(e.getMessage());
+        }
+    }
+
+
+    @FXML
+    private void delateReader(){
+        int selectIndex = tableCzytelnicy.getSelectionModel().getFocusedIndex();
+        Czytelnik selectedReader = tableCzytelnicy.getSelectionModel().getSelectedItem();
+        if(selectedReader != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initOwner(myApp.getPrimaryStage());
+            alert.setTitle("Uwaga!");
+            alert.setHeaderText("Czy jesteś pewien ten operacji?");
+            alert.setContentText("Proszę upewnić się, że czytelnik zwrócił wszystkie książki");
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.get() == ButtonType.OK) {
+                biblioteka.zwrotWszystkichKsiazek(selectedReader.getIndeks_czytelnika());
+                biblioteka.usun_czytelnika(selectedReader.getIndeks_czytelnika());
+                myApp.getCzytelnicyData().remove(selectedReader);
+                ObservableList<Ksiazka> ksiazkiData = myApp.getKsiazkiData().sorted();
+                myApp.getKsiazkiData().removeAll();
+                myApp.getKsiazkiData().setAll(ksiazkiData);
+            }
+        }
+        else {
+            alertToSelect();
+        }
+    }
+
+
+
+    @FXML
+    private void handleReader() {
+        Czytelnik selectedReader = tableCzytelnicy.getSelectionModel().getSelectedItem();
+        if(selectedReader != null) {
+            boolean zamknijClicked = myApp.showCzytlenikDialog(selectedReader);
+            if(zamknijClicked){
+                refreshTable();
+            }
+        }else alertToSelect();
+    }
+
+    @FXML
+    private void searchingBook(){
+        // 3. Wrap the FilteredList in a SortedList.
+        SortedList<Ksiazka> sortedData = new SortedList<>(filteredDataBook);
+        // 4. Bind the SortedList comparator to the TableView comparator.
+        sortedData.comparatorProperty().bind(tableKsiazki.comparatorProperty());
+        // 5. Add sorted (and filtered) data to the table.
+        tableKsiazki.setItems(sortedData);
+    }
+
+    @FXML
+    private void searchingReader(){
+        // 3. Wrap the FilteredList in a SortedList.
+        SortedList<Czytelnik> sortedData = new SortedList<>(filteredDataReader);
+        // 4. Bind the SortedList comparator to the TableView comparator.
+        sortedData.comparatorProperty().bind(tableCzytelnicy.comparatorProperty());
+        // 5. Add sorted (and filtered) data to the table.
+        tableCzytelnicy.setItems(sortedData);
+    }
+
+
+
+    private void refreshTable(){
+        ObservableList<Ksiazka> ksiazkiData = myApp.getKsiazkiData().sorted();
+        myApp.getKsiazkiData().removeAll();
+        myApp.getKsiazkiData().setAll(ksiazkiData);
+        ObservableList<Czytelnik> czytelnicyData = myApp.getCzytelnicyData().sorted();
+        myApp.getCzytelnicyData().removeAll();
+        myApp.getCzytelnicyData().setAll(czytelnicyData);
+    }
+
+    private void alertToSelect(){
         // Nothing selected.
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.initOwner(myApp.getPrimaryStage());
@@ -211,7 +339,15 @@ public class ControllerPanelGlowny {
         alert.showAndWait();
     }
 
-
+    private void alertToFillAllTextFields(String exceptionInformations){
+        // Show the error message.
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initOwner(myApp.getPrimaryStage());
+        alert.setTitle("Uwaga!");
+        alert.setHeaderText("Żle wypełnione pole");
+        alert.setContentText(exceptionInformations);
+        alert.showAndWait();
+    }
 
 
 }

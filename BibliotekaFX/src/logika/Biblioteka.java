@@ -45,10 +45,10 @@ public class Biblioteka implements Serializable {
 
     // metody wypożyczenia, zwroty, dodawanie czytleników
 
-    public void dodaj_czytelnika(String imie, String nazwisko, String data_urodzenia, String numer_telefonu) throws DodawanieException {
+    public void dodaj_czytelnika(String imie, String nazwisko, String data_urodzenia, String email) throws DodawanieException {
 
 
-            Czytelnik czytelnik = new Czytelnik(imie, nazwisko, data_urodzenia, numer_telefonu);
+            Czytelnik czytelnik = new Czytelnik(imie, nazwisko, data_urodzenia, email);
             czytelnik.setPosiadanieKsiazek(false);
             czytelnik.doddaj_indeks_czytelnika(daj_indeks_karty_czytelnika(czytelnik.getImie(), czytelnik.getNazwisko()));
             czytelnicy.add(czytelnik);
@@ -88,7 +88,7 @@ public class Biblioteka implements Serializable {
     public void wypisz_czytelnikow() {
         int i = 0;
         while (i < getCzytelnicy().size()) {
-            System.out.println(getCzytelnicy().get(i).getImie() + " " + getCzytelnicy().get(i).getNazwisko() + " " + getCzytelnicy().get(i).getData_urodzenia() + " " + getCzytelnicy().get(i).getNumer_telefonu() + " " + getCzytelnicy().get(i).getWypozyczone_ksiazki());
+            System.out.println(getCzytelnicy().get(i).getImie() + " " + getCzytelnicy().get(i).getNazwisko() + " " + getCzytelnicy().get(i).getData_urodzenia() + " " + getCzytelnicy().get(i).getEmail() + " " + getCzytelnicy().get(i).getWypozyczone_ksiazki());
             System.out.print(getCzytelnicy().get(i));
             i++;
         }
@@ -149,7 +149,6 @@ public class Biblioteka implements Serializable {
                 if (getCzytelnicy().get(i).getIndeks_czytelnika().equals(indeks_czytelnika))
                     getCzytelnicy().get(i).zwrot(nazwaKsiazki, szukajKsiazki(nazwaKsiazki));
             }
-            obserwator.informuj(); // odświerzenie jtable
         }
     }
 

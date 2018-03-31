@@ -15,17 +15,18 @@ public class Czytelnik implements Serializable {
     private StringProperty imie;
     private StringProperty nazwisko;
     private StringProperty data_urodzenia;
-    private StringProperty numer_telefonu;
+    private StringProperty email;
     private StringProperty indeks_czytelnika;
     private Boolean posiadanieKsiazek;
+    private StringProperty zdjecie;
     private Map<String, Ksiazka> wypozyczone_ksiazki = new HashMap<String, Ksiazka>();
     // konstruktor
-    public Czytelnik(String imie, String nazwisko, String data_urodzenia, String numer_telefonu) throws DodawanieException {
-        if(!Objects.equals(imie, "") && !Objects.equals(nazwisko, "") && !Objects.equals(data_urodzenia, "") && !Objects.equals(numer_telefonu, "")) {
+    public Czytelnik(String imie, String nazwisko, String data_urodzenia, String email) throws DodawanieException {
+        if(!Objects.equals(imie, "") && !Objects.equals(nazwisko, "") && !Objects.equals(data_urodzenia, "") && !Objects.equals(email, "")) {
             this.imie = new SimpleStringProperty(imie);
             this.nazwisko = new SimpleStringProperty(nazwisko);
             this.data_urodzenia = new SimpleStringProperty(data_urodzenia);
-            this.numer_telefonu = new SimpleStringProperty(numer_telefonu);
+            this.email = new SimpleStringProperty(email);
         }
         else
             throw new DodawanieException("Wypełnij wszystkie pola!");
@@ -48,8 +49,8 @@ public class Czytelnik implements Serializable {
         return data_urodzenia.get();
     }
 
-    public String getNumer_telefonu() {
-        return numer_telefonu.get();
+    public String getEmail() {
+        return email.get();
     }
 
     public String getIndeks_czytelnika() {
@@ -72,12 +73,24 @@ public class Czytelnik implements Serializable {
         return data_urodzenia;
     }
 
-    public StringProperty getNumer_telefonuProperty() {
-        return numer_telefonu;
+    public StringProperty getEmailProperty() {
+        return email;
     }
 
     public StringProperty getIndeks_czytelnikaProperty() {
         return indeks_czytelnika;
+    }
+
+    public String getZdjecie() {
+        return zdjecie.get();
+    }
+
+    public StringProperty zdjecieProperty() {
+        return zdjecie;
+    }
+
+    public void setZdjecie(String zdjecie) {
+        this.zdjecie = new SimpleStringProperty(zdjecie);
     }
 
     public void setImie(String imie) throws DodawanieException {
@@ -104,9 +117,9 @@ public class Czytelnik implements Serializable {
             throw new DodawanieException("Wypelnij pole Data Urodzenia!");
     }
 
-    public void setNumer_telefonu(String numer_telefonu) throws DodawanieException {
+    public void setEmail(String numer_telefonu) throws DodawanieException {
         if(!Objects.equals(numer_telefonu,"")) {
-            this.numer_telefonu = new SimpleStringProperty(numer_telefonu);
+            this.email = new SimpleStringProperty(numer_telefonu);
         }
         else
             throw new DodawanieException("Wypełnij pole Numer Telefonu!");
