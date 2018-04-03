@@ -10,9 +10,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphicInterface.fxml.ControllerReaderPanel">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="background" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphicInterface.fxml.ControllerReaderPanel">
    <children>
-      <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="770.0" prefWidth="960.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="770.0" prefWidth="960.0" styleClass="background" stylesheets="@DarkTheme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
@@ -23,7 +23,7 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </HBox.margin>
                         </ImageView>
-                        <GridPane prefHeight="295.0" prefWidth="998.0">
+                        <GridPane prefHeight="295.0" prefWidth="998.0" styleClass="background">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="494.0" minWidth="10.0" prefWidth="136.0" />
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="807.0" minWidth="10.0" prefWidth="622.0" />
@@ -37,27 +37,27 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label text="Imię">
+                              <Label styleClass="label-bright" text="Imię">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label text="Nazwisko" GridPane.rowIndex="1">
+                              <Label styleClass="label-bright" text="Nazwisko" GridPane.rowIndex="1">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label text="Data urodzenia" GridPane.rowIndex="2">
+                              <Label styleClass="label-bright" text="Data urodzenia" GridPane.rowIndex="2">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label text="Numer Indeksu" GridPane.rowIndex="3">
+                              <Label styleClass="label-bright" text="Numer Indeksu" GridPane.rowIndex="3">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label text="E-mail" GridPane.rowIndex="4">
+                              <Label styleClass="label-bright" text="E-mail" GridPane.rowIndex="4">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
