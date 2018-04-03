@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -37,7 +38,8 @@ public class MyApp extends Application implements Serializable {
 
 
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("Library");
+        this.primaryStage.setTitle("Biblioteka");
+        this.primaryStage.getIcons().add(new Image("file:resources/Bicon.png"));
         initRootLayout();
         showLibraryOverview();
     }
@@ -49,7 +51,7 @@ public class MyApp extends Application implements Serializable {
             library.addNewBook("kek1","kek1","kek1");
             library.addNewBook("kek2","kek2","kek2");
             library.addReader("Pan Koala","Z Australii","10.10.2010","PanKoala@gmail.com");
-            library.getReaders().get(library.getReaders().size()-1).setImage("koala.jpg");
+            library.getReaders().get(library.getReaders().size()-1).setImage("resources/koala.jpg");
             booksData.addAll(library.getCatalog().getBooks().values());
             readersData.addAll(library.getReaders());
 

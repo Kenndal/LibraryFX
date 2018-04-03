@@ -169,8 +169,49 @@ public class ControllerMainPanel {
             });
         });
 
+        statusColumn.setCellFactory(column ->{
+            return new TableCell<Book,String>(){
+                @Override
+                protected void updateItem(String item, boolean empty){
+                    super.updateItem(item,empty);
 
+                    if(item == null || empty){
+                        setText(null);
+                        setStyle("");
+                    }else{
+                        setText(item);
+                        if(item.equals("Dostępna")){
+                            setTextFill(Color.GREEN);
+                        }else{
+                            setTextFill(Color.RED);
+                        }
+                    }
+                }
+            };
+        });
+
+        arrearsCoulmn.setCellFactory(column ->{
+            return new TableCell<Reader,String>(){
+                @Override
+                protected void updateItem(String item,boolean empty){
+                    super.updateItem(item, empty);
+
+                    if(item == null || empty){
+                        setText(null);
+                        setStyle("");
+                    }else{
+                        setText(item);
+                        if(item.equals("Tak")){
+                            setTextFill(Color.YELLOW);
+                        }else{
+                            setTextFill(Color.GREEN);
+                        }
+                    }
+                }
+            };
+        });
     }
+
 
     public void setMyApp(MyApp myApp) {
         this.myApp = myApp;
@@ -198,7 +239,7 @@ public class ControllerMainPanel {
                 myApp.getBooksData().remove(selectedBook);
             }
             else {
-                alertToSelect();
+                alertToSelectBook();
             }
         } catch (RemovingException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -221,7 +262,7 @@ public class ControllerMainPanel {
                  myApp.getBooksData().sorted();
              }
          }else {
-                alertToSelect();
+                alertToSelectBook();
          }
     }
 
@@ -234,7 +275,7 @@ public class ControllerMainPanel {
                 refreshTable();
             }
         }else {
-            alertToSelect();
+            alertToSelectBook();
         }
     }
 
@@ -287,7 +328,7 @@ public class ControllerMainPanel {
             }
         }
         else {
-            alertToSelect();
+            alertToSelectReader();
         }
     }
 
@@ -301,7 +342,7 @@ public class ControllerMainPanel {
             if(closeClicked){
                 refreshTable();
             }
-        }else alertToSelect();
+        }else alertToSelectReader();
     }
 
     @FXML
@@ -335,7 +376,7 @@ public class ControllerMainPanel {
         myApp.getReadersData().setAll(readersData);
     }
 
-    private void alertToSelect(){
+    private void alertToSelectBook(){
         // Nothing selected.
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.initOwner(myApp.getPrimaryStage());
@@ -344,6 +385,17 @@ public class ControllerMainPanel {
         alert.setContentText("Proszę najpierw wybrać książkę z tabeli.");
         alert.showAndWait();
     }
+
+    private void alertToSelectReader(){
+        // Nothing selected.
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.initOwner(myApp.getPrimaryStage());
+        alert.setTitle("Uwaga");
+        alert.setHeaderText("Nie wybrano Czytelnika.");
+        alert.setContentText("Proszę najpierw wybrać Czytelnika z tabeli.");
+        alert.showAndWait();
+    }
+
 
     private void alertToFillAllTextFields(String exceptionInformations){
         // Show the error message.
