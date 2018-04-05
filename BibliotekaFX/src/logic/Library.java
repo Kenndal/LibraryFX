@@ -151,62 +151,66 @@ public class Library implements Serializable {
 
 
     // zapis katalogu do pliku
-    public void zapiszDoPlikuKatalog(String nazwaPliku)throws IOException{
-        ObjectOutputStream dozapisu = null;
+    public void saveCatalogToFile(String nazwaPliku)throws IOException{
+        ObjectOutputStream toSave = null;
         try {
-            dozapisu = new ObjectOutputStream(new FileOutputStream(nazwaPliku));
-            dozapisu.writeObject(catalog);
+            FileOutputStream outputStream = new FileOutputStream(nazwaPliku);
+            toSave = new ObjectOutputStream(outputStream);
+            toSave.writeObject(catalog);
         }catch (IOException ex) {
             System.out.println("Blad w zapisie do pliku '" + nazwaPliku + "'");
         }
         finally {
-            if(dozapisu!=null)
-                dozapisu.close();
+            if(toSave!=null)
+                toSave.close();
         }
     }
 
     // odczyt katalogu z pliku
-    public void odczytKataloguZPliku(String nazwaPliku)throws IOException,ClassNotFoundException{
-        ObjectInputStream doodczytu=null;
+    public void loadCatalog(String nazwaPliku)throws IOException,ClassNotFoundException{
+        ObjectInputStream toLoad=null;
         try{
-            doodczytu=new ObjectInputStream(new FileInputStream(nazwaPliku));
-            catalog =(Catalog) doodczytu.readObject();
+            FileInputStream input = new FileInputStream(nazwaPliku);
+            toLoad=new ObjectInputStream(input);
+            catalog =(Catalog) toLoad.readObject();
         } catch (EOFException ex) {
             System.out.println("Koniec pliku");
         }
         finally{
-            if(doodczytu!=null)
-                doodczytu.close();
+            if(toLoad!=null)
+                toLoad.close();
         }
     }
 
     // zapis Czytelnikow do pliku
-    public void zapiszDoPlikuCzytelnicy(String nazwaPliku)throws IOException{
-        ObjectOutputStream dozapisu = null;
+    public void saveReadersToFile(String nazwaPliku)throws IOException{
+        ObjectOutputStream toSave = null;
         try {
-            dozapisu = new ObjectOutputStream(new FileOutputStream(nazwaPliku));
-            dozapisu.writeObject(readers);
+            FileOutputStream outputStream = new FileOutputStream(nazwaPliku);
+            toSave = new ObjectOutputStream(outputStream);
+            toSave.writeObject(readers);
         }catch (IOException ex) {
             System.out.println("Blad w zapisie do pliku '" + nazwaPliku + "'");
         }
         finally {
-            if(dozapisu!=null)
-                dozapisu.close();
+            if(toSave!=null)
+                toSave.close();
         }
     }
 
     // odczyt czytelnikow z pliku
-    public void odczytCzytelnikowZPliku(String nazwaPliku)throws IOException,ClassNotFoundException{
-        ObjectInputStream doodczytu=null;
+    public void loadReaders(String nazwaPliku)throws IOException,ClassNotFoundException{
+        ObjectInputStream toLoad=null;
         try{
-            doodczytu=new ObjectInputStream(new FileInputStream(nazwaPliku));
-            readers = (ArrayList<Reader>) doodczytu.readObject();
+            FileInputStream input = new FileInputStream(nazwaPliku);
+            toLoad=new ObjectInputStream(input);
+            readers = (ArrayList<Reader>) toLoad.readObject();
         } catch (EOFException ex) {
             System.out.println("Koniec pliku");
         }
         finally{
-            if(doodczytu!=null)
-                doodczytu.close();
+            if(toLoad!=null)
+                toLoad.close();
         }
     }
 
@@ -214,11 +218,11 @@ public class Library implements Serializable {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 
         Library biblioteka = new Library();
-        biblioteka.zapiszDoPlikuKatalog("biblioteczka.bin");
-        biblioteka.zapiszDoPlikuCzytelnicy("czytelnicy.bin");
-        biblioteka.odczytKataloguZPliku("biblioteczka.bin");
-        biblioteka.odczytCzytelnikowZPliku("czytelnicy.bin");
-
+        biblioteka.saveCatalogToFile("biblioteczka.bin");
+        biblioteka.saveReadersToFile("czytelnicy.bin");
+        biblioteka.loadCatalog("biblioteczka.bin");
+        biblioteka.loadReaders("czytelnicy.bin");
+        biblioteka.getCatalog().printBooks();
 
     }
 }

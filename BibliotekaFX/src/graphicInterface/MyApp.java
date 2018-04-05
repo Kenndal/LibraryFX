@@ -1,11 +1,13 @@
 package graphicInterface;
 
+import graphicInterface.fxml.*;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -14,11 +16,6 @@ import javafx.stage.Stage;
 import logic.Library;
 import logic.Book;
 import logic.Reader;
-import graphicInterface.fxml.ControllerReaderPanel;
-import graphicInterface.fxml.ControllerBookEditPanel;
-import graphicInterface.fxml.ControllerMainPanel;
-import graphicInterface.fxml.ControllerRentPanel;
-import exceptions.AddingException;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -33,6 +30,12 @@ public class MyApp extends Application implements Serializable {
     private ObservableList<Reader> readersData = FXCollections.observableArrayList();
     private FilteredList<Book> filteredDataBook = new FilteredList<>(booksData, p -> true);
     private FilteredList<Reader> filteredDataReader = new FilteredList<>(readersData, p -> true);
+
+
+    public Library getLibrary() {
+        return library;
+    }
+
     @Override
     public void start(Stage primaryStage) {
 
@@ -46,19 +49,10 @@ public class MyApp extends Application implements Serializable {
 
 
     public MyApp() throws IOException, ClassNotFoundException {
-        try {
-            library.addNewBook("kek","kek","kek");
-            library.addNewBook("kek1","kek1","kek1");
-            library.addNewBook("kek2","kek2","kek2");
-            library.addReader("Pan Koala","Z Australii","10.10.2010","PanKoala@gmail.com");
-            library.getReaders().get(library.getReaders().size()-1).setImage("resources/koala.jpg");
-            booksData.addAll(library.getCatalog().getBooks().values());
-            readersData.addAll(library.getReaders());
-
-        } catch (AddingException e) {
-            e.printStackTrace();
-        }
-
+        library.loadCatalog("biblioteczka.bin");
+        library.loadReaders("czytelnicy.bin");
+        booksData.addAll(library.getCatalog().getBooks().values());
+        readersData.addAll(library.getReaders());
     }
 
     public FilteredList<Book> getFilteredDataBook() {
@@ -82,14 +76,20 @@ public class MyApp extends Application implements Serializable {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MyApp.class.getResource("fxml/RootLayout.fxml"));
-            rootLayout =(BorderPane) loader.load();
+            rootLayout = (BorderPane) loader.load();
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
+
+            // Give the controller access to the main app.
+            RootLayoutController controller = loader.getController();
+            controller.setMyApp(this);
+
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public void showLibraryOverview() {
@@ -211,11 +211,6 @@ public class MyApp extends Application implements Serializable {
             return false;
         }
     }
-
-
-
-
-
 
     public Stage getPrimaryStage() {
         return primaryStage;

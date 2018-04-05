@@ -1,5 +1,6 @@
 package graphicInterface.fxml;
 
+import graphicInterface.MyApp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -7,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import logic.Library;
@@ -14,6 +16,7 @@ import logic.Book;
 import logic.Reader;
 import exceptions.AddingException;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -92,12 +95,16 @@ public class ControllerReaderPanel {
         birthdayTextField.setText(reader.getBrithday());
         readerIndexTextField.setText(reader.getIndexReader());
         mailTextField.setText(reader.getEmail());
-        try {
-            FileInputStream input = new FileInputStream(reader.getImage());
-            readerImage.setImage(new Image(input));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+
+            if (reader.getImage() != null) {
+                try {
+                    FileInputStream input = new FileInputStream(reader.getImage());
+                    readerImage.setImage(new Image(input));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+            }
+            }
+
 
 
         booksData.addAll(reader.getRentBooks().values());
@@ -156,6 +163,19 @@ public class ControllerReaderPanel {
             alert.showAndWait();
         }
 
+    }
+
+    @FXML
+    private void handleAddImage(){
+        FileChooser fileChooser = new FileChooser();
+
+        // Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "PNG files (*.png)", "*.png");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Show save file dialog
+        File file = fileChooser.showOpenDialog(this.dialogStage);
     }
 }
 

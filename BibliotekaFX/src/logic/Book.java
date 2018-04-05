@@ -5,25 +5,26 @@ import javafx.beans.property.StringProperty;
 import exceptions.AddingException;
 import exceptions.StatusException;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class Book implements Serializable {
     // podstatwowe zmienne
-    private StringProperty title;
-    private StringProperty genre;
-    private StringProperty author;
-    private boolean status;
-    private StringProperty indexBook;  // nie dostaje na początku, dopiero przy daniu na pólkę
+    private String title;
+    private String genre;
+    private String author;
+    private String indexBook;  // nie dostaje na początku, dopiero przy daniu na pólkę
+    private boolean status = false;
 
 // zmienne dodatkowe
 
     // konstruktor książki
     public Book(String title, String gatunek, String author, boolean status) throws AddingException {
         if(!Objects.equals(title, "") && !Objects.equals(author, "") && !Objects.equals(gatunek, "") ) {
-            this.title = new SimpleStringProperty(title);
-            this.genre = new SimpleStringProperty(gatunek);
-            this.author = new SimpleStringProperty(author);
+            this.title = title;
+            this.genre = gatunek;
+            this.author = author;
             this.status = status;
         }
         else
@@ -32,44 +33,44 @@ public class Book implements Serializable {
 
     // gettery do zmiennych podstawowych
     public String getTitle() {
-        return title.get();
+        return title;
     }
 
     public String getGenre() {
-        return genre.get();
+        return genre;
     }
 
     public String getAuthor() {
-        return author.get();
+        return author;
     }
 
     public Boolean isStatus() {
         return status;
     }
 
-    public StringProperty getTitleProperty() { return title; }
+    public StringProperty getTitleProperty() { return new SimpleStringProperty(title); }
 
     public StringProperty getGenreProperty() {
-        return genre;
+        return new SimpleStringProperty(genre);
     }
 
     public StringProperty getAuthorProperty() {
-        return author;
+       return new SimpleStringProperty(author);
     }
 
     public String getIndexBook() {
-        return indexBook.get();
+        return indexBook;
     }
 
     public StringProperty getIndexBookProperty() {
-        return indexBook;
+        return new SimpleStringProperty(indexBook);
     }
 
     // settery
 
     public void setTitle(String title) throws AddingException {
         if(!Objects.equals(title,"")) {
-            this.title.set(title);
+            this.title = title;
         }
         else
             throw new AddingException("Wypełnij pole Tytuł!");
@@ -77,7 +78,7 @@ public class Book implements Serializable {
 
     public void setGenre(String genre) throws AddingException {
         if(!Objects.equals(genre,"")) {
-            this.genre.set(genre);
+            this.genre = genre;
         }
         else
             throw new AddingException("Wypełnij pole Gatunek!");
@@ -86,7 +87,7 @@ public class Book implements Serializable {
 
     public void setAuthor(String author) throws AddingException {
         if(!Objects.equals(author,"")) {
-            this.author.set(author);
+            this.author = author;
         }
         else
             throw new AddingException("Wypełnij pole Autor!");
@@ -104,7 +105,7 @@ public class Book implements Serializable {
 
 
     protected void addIndexBook(String indexBook){
-        this.indexBook= new SimpleStringProperty(indexBook);
+        this.indexBook= indexBook;
     }
 
     public void rentBook(){
@@ -132,4 +133,5 @@ public class Book implements Serializable {
         else
             return new SimpleStringProperty("Dostępna");
     }
+
 }

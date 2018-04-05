@@ -11,21 +11,21 @@ import java.util.Objects;
 
 public class Reader implements Serializable {
     // zmienne podstawowe
-    private StringProperty firstName;
-    private StringProperty lastName;
-    private StringProperty birthday;
-    private StringProperty email;
-    private StringProperty indexReader;
+    private String firstName;
+    private String lastName;
+    private String birthday;
+    private String email;
+    private String indexReader;
     private Boolean booksHaveStatus;
-    private StringProperty image;
+    private String image;
     private Map<String, Book> rentBooks = new HashMap<String, Book>();
     // konstruktor
     public Reader(String firstName, String lastName, String birthday, String email) throws AddingException {
         if(!Objects.equals(firstName, "") && !Objects.equals(lastName, "") && !Objects.equals(birthday, "") && !Objects.equals(email, "")) {
-            this.firstName = new SimpleStringProperty(firstName);
-            this.lastName = new SimpleStringProperty(lastName);
-            this.birthday = new SimpleStringProperty(birthday);
-            this.email = new SimpleStringProperty(email);
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.birthday = birthday;
+            this.email = email;
         }
         else
             throw new AddingException("Wypełnij wszystkie pola!");
@@ -37,23 +37,23 @@ public class Reader implements Serializable {
     }
 
     public String getFirstName() {
-        return firstName.get();
+        return firstName;
     }
 
     public String getLastName() {
-        return lastName.get();
+        return lastName;
     }
 
     public String getBrithday() {
-        return birthday.get();
+        return birthday;
     }
 
     public String getEmail() {
-        return email.get();
+        return email;
     }
 
     public String getIndexReader() {
-        return indexReader.get();
+        return indexReader;
     }
 
     public Boolean getBooksHaveStatus() {
@@ -61,40 +61,40 @@ public class Reader implements Serializable {
     }
 
     public StringProperty getFirstNameProperty() {
-        return firstName;
+        return new SimpleStringProperty(firstName);
     }
 
     public StringProperty getLastNameProperty() {
-        return lastName;
+        return new SimpleStringProperty(lastName);
     }
 
     public StringProperty getBrithDayProperty() {
-        return birthday;
+        return new SimpleStringProperty(birthday);
     }
 
     public StringProperty getEmailProperty() {
-        return email;
+        return new SimpleStringProperty(email);
     }
 
     public StringProperty getINdeksReaderProperty() {
-        return indexReader;
+        return new SimpleStringProperty(indexReader);
     }
 
     public String getImage() {
-        return image.get();
-    }
-
-    public StringProperty getImageProperty() {
         return image;
     }
 
+    public StringProperty getImageProperty() {
+        return new SimpleStringProperty(image);
+    }
+
     public void setImage(String image) {
-        this.image = new SimpleStringProperty(image);
+        this.image = image;
     }
 
     public void setFirstName(String firstName) throws AddingException {
         if(!Objects.equals(firstName,"")) {
-            this.firstName = new SimpleStringProperty(firstName);;
+            this.firstName = firstName;
         }
         else
             throw new AddingException("Wypełnij pole Imie!");
@@ -102,7 +102,7 @@ public class Reader implements Serializable {
 
     public void setLastName(String lastName) throws AddingException {
         if(!Objects.equals(lastName,"")) {
-            this.lastName = new SimpleStringProperty(lastName);
+            this.lastName = lastName;
         }
         else
             throw new AddingException("Wypełnij pole Nazwisko!");
@@ -110,15 +110,15 @@ public class Reader implements Serializable {
 
     public void setBirthday(String birthday)throws AddingException {
         if(!Objects.equals(birthday,"")) {
-            this.birthday = new SimpleStringProperty(birthday);
+            this.birthday = birthday;
         }
         else
             throw new AddingException("Wypelnij pole Data Urodzenia!");
     }
 
-    public void setEmail(String numer_telefonu) throws AddingException {
-        if(!Objects.equals(numer_telefonu,"")) {
-            this.email = new SimpleStringProperty(numer_telefonu);
+    public void setEmail(String email) throws AddingException {
+        if(!Objects.equals(email,"")) {
+            this.email = email;
         }
         else
             throw new AddingException("Wypełnij pole Numer Telefonu!");
@@ -129,7 +129,7 @@ public class Reader implements Serializable {
     }
 
     protected void addIndeksReader(String index){
-        indexReader = new SimpleStringProperty(index);
+        indexReader = index;
     }
 
     // metody (wypozyczenia i zwroty)
