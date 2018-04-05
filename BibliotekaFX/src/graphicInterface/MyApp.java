@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
@@ -13,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import logic.Library;
 import logic.Book;
 import logic.Reader;
@@ -43,14 +45,27 @@ public class MyApp extends Application implements Serializable {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Biblioteka");
         this.primaryStage.getIcons().add(new Image("file:resources/Bicon.png"));
+        this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                try {
+                    library.saveReadersToFile("resources/czytelnicy.bin");
+                    library.saveCatalogToFile("resources/biblioteczka.bin");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
         initRootLayout();
         showLibraryOverview();
+        this.primaryStage.setResizable(true);
     }
 
 
+
     public MyApp() throws IOException, ClassNotFoundException {
-        library.loadCatalog("biblioteczka.bin");
-        library.loadReaders("czytelnicy.bin");
+        library.loadCatalog("resources/biblioteczka.bin");
+        library.loadReaders("resources/czytelnicy.bin");
         booksData.addAll(library.getCatalog().getBooks().values());
         readersData.addAll(library.getReaders());
     }
@@ -211,6 +226,8 @@ public class MyApp extends Application implements Serializable {
             return false;
         }
     }
+
+
 
     public Stage getPrimaryStage() {
         return primaryStage;

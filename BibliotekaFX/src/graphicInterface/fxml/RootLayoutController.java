@@ -20,8 +20,8 @@ public class RootLayoutController {
     @FXML
     private void handleSave(){
         try {
-            myApp.getLibrary().saveCatalogToFile("biblioteczka.bin");
-            myApp.getLibrary().saveReadersToFile("czytelnicy.bin");
+            myApp.getLibrary().saveCatalogToFile("resources/biblioteczka.bin");
+            myApp.getLibrary().saveReadersToFile("resources/czytelnicy.bin");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -33,8 +33,11 @@ public class RootLayoutController {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Biblioteka");
         alert.setHeaderText("Informacje");
-        alert.setContentText("Jedno wielkie: KEK\n Bo przecież kochamy to KEK <3 \n Jak nie bedzie z tego 5.0 to będę smutny :(");
+        alert.setContentText("Jedno wielkie: KEK \nBo przecież kochamy to KEK <3 \nJak nie bedzie z tego 5.0 to będę smutny :(" +
+                "\n Autorzy: Jakub Przybyło i Filip Woźniak");
 
+        alert.setHeight(200);
+        alert.setWidth(400);
         alert.showAndWait();
     }
 

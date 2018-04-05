@@ -92,12 +92,21 @@ public class Library implements Serializable {
     }
 
     private String addBookIndex(String title, String genre, String author) {
-        String threeFirstLetterTitle = String.valueOf(title.charAt(0)) + String.valueOf(title.charAt(1)) + String.valueOf(title.charAt(2));
-        String threeFirstLetterGenre = String.valueOf(genre.charAt(0)) + String.valueOf(genre.charAt(1)) + String.valueOf(genre.charAt(2));
-        String threeFirstLetterAutor = String.valueOf(author.charAt(0)) + String.valueOf(author.charAt(1)) + String.valueOf(author.charAt(2));
+        String firstLettersTitle = "";
+        String firstLettersGenre = "";
+        String firstLettersAutor = "";
+        for(int i=0; i<title.length(); i++){
+            firstLettersTitle += String.valueOf(title.charAt(i));
+        }
+        for(int i=0;i<genre.length();i++) {
+            firstLettersGenre += String.valueOf(genre.charAt(i));
+        }
+        for(int i=0;i<author.length();i++) {
+            firstLettersAutor += String.valueOf(author.charAt(i));
+        }
         int numer = random.nextInt(10001);
         String indeks;
-        indeks = threeFirstLetterTitle + threeFirstLetterGenre + threeFirstLetterAutor + Integer.toString(numer);
+        indeks = firstLettersTitle + firstLettersGenre + firstLettersAutor + Integer.toString(numer);
         return indeks;
     }
 
@@ -141,6 +150,7 @@ public class Library implements Serializable {
             catalog.getBooks().get(entry.getKey()).returnBook();
         }
     }
+
     public void printCatalog() {
         catalog.printBooks();
     }
@@ -218,10 +228,10 @@ public class Library implements Serializable {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 
         Library biblioteka = new Library();
-        biblioteka.saveCatalogToFile("biblioteczka.bin");
-        biblioteka.saveReadersToFile("czytelnicy.bin");
-        biblioteka.loadCatalog("biblioteczka.bin");
-        biblioteka.loadReaders("czytelnicy.bin");
+        biblioteka.saveCatalogToFile("resources/biblioteczka.bin");
+        biblioteka.saveReadersToFile("resources/czytelnicy.bin");
+        biblioteka.loadCatalog("resources/biblioteczka.bin");
+        biblioteka.loadReaders("resources/czytelnicy.bin");
         biblioteka.getCatalog().printBooks();
 
     }

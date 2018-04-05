@@ -79,6 +79,8 @@ public class ControllerReaderPanel {
         authorColumn.setCellValueFactory(cellData -> cellData.getValue().getAuthorProperty());
         genreColumn.setCellValueFactory(cellData -> cellData.getValue().getGenreProperty());
         indexColumn.setCellValueFactory(cellData -> cellData.getValue().getIndexBookProperty());
+
+
     }
 
     // set dialogStage
@@ -139,7 +141,7 @@ public class ControllerReaderPanel {
     }
 
     @FXML
-    private void handleCancel() {
+    public void handleCancel() {
         dialogStage.close();
         closeClicked = true;
     }

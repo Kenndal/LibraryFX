@@ -18,11 +18,23 @@
                <children>
                   <HBox prefHeight="295.0" prefWidth="998.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <ImageView fx:id="readerImage" fitHeight="250.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <ImageView fx:id="readerImage" fitHeight="220.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="10.0" />
+                                 </VBox.margin>
+                              </ImageView>
+                              <Button mnemonicParsing="false" onAction="#handleAddImage" prefHeight="33.0" prefWidth="180.0" text="Dodaj Zdjęcie">
+                                 <VBox.margin>
+                                    <Insets left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
                            <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              <Insets left="10.0" right="10.0" top="10.0" />
                            </HBox.margin>
-                        </ImageView>
+                        </VBox>
                         <GridPane prefHeight="295.0" prefWidth="998.0" styleClass="background">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="494.0" minWidth="10.0" prefWidth="136.0" />
@@ -67,18 +79,13 @@
                                     <Insets />
                                  </opaqueInsets>
                                  <GridPane.margin>
-                                    <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                                    <Insets bottom="4.0" left="20.0" right="10.0" top="10.0" />
                                  </GridPane.margin></Button>
                               <TextField fx:id="firstNameTextField" GridPane.columnIndex="1" />
                               <TextField fx:id="lastNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <TextField fx:id="birthdayTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <TextField fx:id="readerIndexTextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                               <TextField fx:id="mailTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <Button mnemonicParsing="false" onAction="#handleAddImage" text="Dodaj Zdjęcie" GridPane.rowIndex="5">
-                                 <GridPane.margin>
-                                    <Insets />
-                                 </GridPane.margin>
-                              </Button>
                            </children>
                            <HBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
