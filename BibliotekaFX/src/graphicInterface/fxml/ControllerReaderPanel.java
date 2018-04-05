@@ -101,7 +101,7 @@ public class ControllerReaderPanel {
                     FileInputStream input = new FileInputStream(reader.getImage());
                     readerImage.setImage(new Image(input));
                 } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                    alertImage();
             }
             }
 
@@ -171,11 +171,37 @@ public class ControllerReaderPanel {
 
         // Set extension filter
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-                "PNG files (*.png)", "*.png");
+                "jpg files (*.jpg)", "*.jpg");
         fileChooser.getExtensionFilters().add(extFilter);
 
         // Show save file dialog
         File file = fileChooser.showOpenDialog(this.dialogStage);
+
+        if(file != null){
+              reader.setImage(file.toString());
+                try {
+                    FileInputStream input = new FileInputStream(reader.getImage());
+                    readerImage.setImage(new Image(input));
+                } catch (FileNotFoundException e) {
+                    alertImage();
+                }
+        }
+
+    }
+
+    private void alertImage(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initOwner(this.dialogStage);
+        alert.setTitle("Uwaga!");
+        alert.setHeaderText("Nie można odnaleźć zdjęcia");
+        alert.setContentText("Prawdopodobnie zdjęcie zostało usunięte.\n" +
+                "Proszę o dodanie zdjecie od nowa.");
+
+        alert.setWidth(600);
+        alert.setHeight(400);
+        alert.showAndWait();
+
+        reader.setImage("");
     }
 }
 
