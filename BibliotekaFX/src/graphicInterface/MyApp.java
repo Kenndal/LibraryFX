@@ -219,6 +219,11 @@ public class MyApp extends Application implements Serializable {
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
+            dialogStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                    controller.setCloseClicked(true);
+                }
+            });
 
             return controller.isCloseClicked();
         } catch (IOException e) {

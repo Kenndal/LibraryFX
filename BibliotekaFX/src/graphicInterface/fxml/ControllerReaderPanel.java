@@ -81,13 +81,20 @@ public class ControllerReaderPanel {
         indexColumn.setCellValueFactory(cellData -> cellData.getValue().getIndexBookProperty());
 
 
+
+
     }
+
+
 
     // set dialogStage
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
     }
 
+    public void setCloseClicked(boolean closeClicked) {
+        this.closeClicked = closeClicked;
+    }
 
     public void setReader(Reader reader) {
         this.reader = reader;

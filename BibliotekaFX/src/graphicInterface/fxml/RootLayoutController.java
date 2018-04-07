@@ -22,6 +22,11 @@ public class RootLayoutController {
         try {
             myApp.getLibrary().saveCatalogToFile("resources/biblioteczka.bin");
             myApp.getLibrary().saveReadersToFile("resources/czytelnicy.bin");
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Biblioteka");
+            alert.setHeaderText("Zapisano");
+            alert.showAndWait();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
