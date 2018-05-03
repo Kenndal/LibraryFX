@@ -1,13 +1,16 @@
 package graphicInterface.fxml;
 
-import java.io.File;
+
 import java.io.IOException;
 
 import graphicInterface.MyApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.stage.FileChooser;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+
 
 
 public class RootLayoutController {
@@ -23,8 +26,9 @@ public class RootLayoutController {
             myApp.getLibrary().saveCatalogToFile("resources/biblioteczka.bin");
             myApp.getLibrary().saveReadersToFile("resources/czytelnicy.bin");
             Alert alert = new Alert(AlertType.INFORMATION);
+            ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("file:resources/Bicon.png"));
             alert.setTitle("Biblioteka");
-            alert.setHeaderText("Zapisano");
+            alert.setHeaderText("Zapisano.");
             alert.showAndWait();
 
         } catch (IOException e) {
@@ -36,6 +40,7 @@ public class RootLayoutController {
     @FXML
     private void handleAbout(){
         Alert alert = new Alert(AlertType.INFORMATION);
+        ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("file:resources/Bicon.png"));
         alert.setTitle("Biblioteka");
         alert.setHeaderText("Informacje");
         alert.setContentText("Jedno wielkie: KEK \nBo przecież kochamy to KEK <3 \nJak nie bedzie z tego 5.0 to będę smutny :(" +

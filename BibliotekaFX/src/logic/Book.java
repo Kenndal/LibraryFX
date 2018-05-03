@@ -5,7 +5,6 @@ import javafx.beans.property.StringProperty;
 import exceptions.AddingException;
 import exceptions.StatusException;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -93,6 +92,9 @@ public class Book implements Serializable {
             throw new AddingException("Wypełnij pole Autor!");
     }
 
+    protected void setIndexBook(String indexBook){
+        this.indexBook= indexBook;
+    }
 
     // ewentualne metody
 
@@ -100,12 +102,6 @@ public class Book implements Serializable {
         if(!status){
             throw new StatusException("Książka jest już wypożyczona!");
         }
-    }
-
-
-
-    protected void addIndexBook(String indexBook){
-        this.indexBook= indexBook;
     }
 
     public void rentBook(){

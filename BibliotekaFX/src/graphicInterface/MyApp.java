@@ -1,5 +1,6 @@
 package graphicInterface;
 
+
 import graphicInterface.fxml.*;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -24,7 +25,7 @@ import java.io.Serializable;
 
 public class MyApp extends Application implements Serializable {
 
-
+    private MyPreloader preloaderStage;
     private Stage primaryStage;
     private BorderPane rootLayout;
     private Library library = new Library();
@@ -41,9 +42,8 @@ public class MyApp extends Application implements Serializable {
     @Override
     public void start(Stage primaryStage) {
 
-
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("Biblioteka");
+        this.primaryStage.setTitle("BibliotekaFX");
         this.primaryStage.getIcons().add(new Image("file:resources/Bicon.png"));
         this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
@@ -58,7 +58,8 @@ public class MyApp extends Application implements Serializable {
         });
         initRootLayout();
         showLibraryOverview();
-        this.primaryStage.setResizable(true);
+        this.primaryStage.setResizable(false);
+
     }
 
 
@@ -146,6 +147,9 @@ public class MyApp extends Application implements Serializable {
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
+            dialogStage.setResizable(false);
+            dialogStage.getIcons().add(new Image("file:resources/Bicon.png"));
+
 
             // Set the person into the controller.
             ControllerBookEditPanel controller = loader.getController();
@@ -177,6 +181,8 @@ public class MyApp extends Application implements Serializable {
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
+            dialogStage.setResizable(false);
+            dialogStage.getIcons().add(new Image("file:resources/Bicon.png"));
 
             // Set the person into the controller.
             ControllerRentPanel controller = loader.getController();
@@ -209,6 +215,8 @@ public class MyApp extends Application implements Serializable {
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
+            dialogStage.setResizable(false);
+            dialogStage.getIcons().add(new Image("file:resources/Bicon.png"));
 
             // Set the person into the controller.
             ControllerReaderPanel controller = loader.getController();
@@ -239,7 +247,7 @@ public class MyApp extends Application implements Serializable {
     }
 
     public static void main(String[] args) {
-        launch(args);
+        launch(MyApp.class,args);
     }
 }
 

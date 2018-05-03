@@ -6,7 +6,6 @@ import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
-import javafx.util.Callback;
 import logic.Library;
 import logic.Book;
 import logic.Reader;
@@ -219,10 +218,6 @@ public class ControllerMainPanel {
         readerTable.setItems(myApp.getReadersData());
         filteredDataBook = myApp.getFilteredDataBook();
         filteredDataReader = myApp.getFilteredDataReader();
-
-
-
-
     }
 
     public void setBiblioteka(Library library) {

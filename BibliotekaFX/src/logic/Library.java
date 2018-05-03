@@ -87,22 +87,29 @@ public class Library implements Serializable {
 
     public void addNewBook(String title, String genre, String author) throws AddingException {
         Book book = new Book(title, genre, author, true);
-        book.addIndexBook(addBookIndex(book.getTitle(), book.getGenre(), book.getAuthor()));
+        book.setIndexBook(addBookIndex(book.getTitle(), book.getGenre(), book.getAuthor()));
         catalog.addBook(book);
     }
 
-    private String addBookIndex(String title, String genre, String author) {
+    public String addBookIndex(String title, String genre, String author) {
         String firstLettersTitle = "";
         String firstLettersGenre = "";
         String firstLettersAutor = "";
         for(int i=0; i<title.length(); i++){
-            firstLettersTitle += String.valueOf(title.charAt(i));
+            if(i < 3) {
+                firstLettersTitle += String.valueOf(title.charAt(i));
+            }else
+                break;
         }
         for(int i=0;i<genre.length();i++) {
-            firstLettersGenre += String.valueOf(genre.charAt(i));
+            if(i < 3){
+                firstLettersGenre += String.valueOf(genre.charAt(i));
+            }else break;
         }
         for(int i=0;i<author.length();i++) {
-            firstLettersAutor += String.valueOf(author.charAt(i));
+            if (i < 3) {
+                firstLettersAutor += String.valueOf(author.charAt(i));
+            }else break;
         }
         int numer = random.nextInt(10001);
         String indeks;
