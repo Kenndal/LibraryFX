@@ -15,7 +15,6 @@ public class Book implements Serializable {
     private String author;
     private String indexBook;  // nie dostaje na początku, dopiero przy daniu na pólkę
     private boolean status = false;
-
 // zmienne dodatkowe
 
     // konstruktor książki

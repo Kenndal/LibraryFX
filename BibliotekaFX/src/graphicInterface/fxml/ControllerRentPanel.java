@@ -1,8 +1,11 @@
 package graphicInterface.fxml;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import logic.Library;
@@ -25,7 +28,7 @@ public class ControllerRentPanel {
     private Button rentButton;
 
     @FXML
-    private TextField indexReaderTextField;
+    private ComboBox<String> indexReaderBox;
 
     @FXML
     private TextField firstNameTextField;
@@ -42,8 +45,10 @@ public class ControllerRentPanel {
     private boolean rentClicked = false;
     private Book book;
     private Library library;
+    private ObservableList<String> indexes = FXCollections.observableArrayList();
     @FXML
     private void initialize() {
+
     }
 
     // set dialogStage
@@ -60,6 +65,8 @@ public class ControllerRentPanel {
 
     public void setBiblioteka(Library library) {
         this.library = library;
+        indexes.addAll(library.allIndexes());
+        indexReaderBox.setItems(indexes);
     }
 
     // return true if the user clicked wypozycz
@@ -70,7 +77,7 @@ public class ControllerRentPanel {
     @FXML
     private void handleOK(){
         try {
-            library.rentBook(book.getTitle(), indexReaderTextField.getText());
+            library.rentBook(book.getTitle(), indexReaderBox.getValue());
             rentClicked = true;
             dialogStage.close();
         } catch (AddingException | SearchException e) {

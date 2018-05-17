@@ -241,7 +241,7 @@ public class ControllerMainPanel {
             alert.initOwner(myApp.getPrimaryStage());
             alert.setTitle("Uwaga!");
             alert.setHeaderText(e.getMessage());
-            alert.setContentText("Proszę najpierw zwrócić książkę, a potem usunąć.");
+            alert.setContentText("Proszę najpierw zwrócić książkę, a potem dopiero usuń.");
             alert.showAndWait();
         }
     }

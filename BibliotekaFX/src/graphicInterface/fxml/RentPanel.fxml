@@ -54,21 +54,21 @@
                   </Label>
                   <HBox prefHeight="40.0" prefWidth="510.0">
                      <children>
-                        <TextField fx:id="firstNameTextField" promptText="Imię">
+                        <TextField fx:id="firstNameTextField" prefHeight="37.0" prefWidth="160.0" promptText="Imię">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </TextField>
-                        <TextField fx:id="lastNameTextField" promptText="Nazwisko">
+                        <TextField fx:id="lastNameTextField" prefHeight="37.0" prefWidth="160.0" promptText="Nazwisko">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </TextField>
-                        <TextField fx:id="indexReaderTextField" promptText="Numer ideksu">
+                        <ComboBox fx:id="indexReaderBox" editable="true" prefHeight="37.0" prefWidth="160.0" promptText="Indeks">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
-                        </TextField>
+                        </ComboBox>
                      </children>
                      <VBox.margin>
                         <Insets left="10.0" right="10.0" />

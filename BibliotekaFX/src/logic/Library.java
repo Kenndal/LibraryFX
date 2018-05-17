@@ -66,8 +66,9 @@ public class Library implements Serializable {
 
     public Reader fingReader(String indeks_czytelnika) {
         for (int i = 0; i < getReaders().size(); i++) {
-            if (getReaders().get(i).getIndexReader().equals(indeks_czytelnika))
+            if (getReaders().get(i).getIndexReader().equals(indeks_czytelnika)) {
                 return getReaders().get(i);
+            }
         }
         return null;
     }
@@ -231,6 +232,14 @@ public class Library implements Serializable {
         }
     }
 
+    public ArrayList<String> allIndexes(){
+        ArrayList<String> indexes = new ArrayList<>();
+        for (Reader reader : readers) {
+            indexes.add(reader.getIndexReader());
+        }
+
+        return indexes;
+    }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 
