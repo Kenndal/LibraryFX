@@ -1,5 +1,6 @@
 package graphicInterface.fxml;
 
+import exceptions.StatusException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -80,7 +81,7 @@ public class ControllerRentPanel {
             library.rentBook(book.getTitle(), indexReaderBox.getValue());
             rentClicked = true;
             dialogStage.close();
-        } catch (AddingException | SearchException e) {
+        } catch (AddingException | SearchException | StatusException e) {
             // Show the error message.
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.initOwner(dialogStage);

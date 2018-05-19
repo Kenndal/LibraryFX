@@ -4,6 +4,7 @@ package logic;
 import exceptions.AddingException;
 import exceptions.SearchException;
 import exceptions.RemovingException;
+import exceptions.StatusException;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -23,13 +24,13 @@ public class Library implements Serializable {
     // catalog
     private Catalog catalog = new Catalog();
 
-    // lista czytelnikow
-    private ArrayList<Reader> readers = new ArrayList<Reader>();
+        // lista czytelnikow
+        private ArrayList<Reader> readers = new ArrayList<Reader>();
 
-    // dodatkowe
-    private Random random = new Random();
-    private static Logger log = Logger.getLogger(Library.class.getName());
-    // gettery
+        // dodatkowe
+        private Random random = new Random();
+        private static Logger log = Logger.getLogger(Library.class.getName());
+        // gettery
 
     public Catalog getCatalog() {
         return catalog;
@@ -44,10 +45,10 @@ public class Library implements Serializable {
     public void addReader(String firstName, String lastName, String birthday, String email) throws AddingException {
 
 
-            Reader czytelnik = new Reader(firstName, lastName, birthday, email);
-            czytelnik.setBooksHaveStatus(false);
-            czytelnik.addIndeksReader(addIndexReader(czytelnik.getFirstName(), czytelnik.getLastName()));
-            readers.add(czytelnik);
+        Reader czytelnik = new Reader(firstName, lastName, birthday, email);
+        czytelnik.setBooksHaveStatus(false);
+        czytelnik.addIndeksReader(addIndexReader(czytelnik.getFirstName(), czytelnik.getLastName()));
+        readers.add(czytelnik);
 
     }
 
@@ -125,7 +126,7 @@ public class Library implements Serializable {
             throw new RemovingException("Nie można usunąć wypożyczonej książki!");
     }
 
-    public void rentBook(String bookTitle, String readerIndex) throws SearchException, AddingException {
+    public void rentBook(String bookTitle, String readerIndex) throws SearchException, AddingException, StatusException {
         int k = 0 ;
         if(!Objects.equals(readerIndex, "")) {
         for (int i = 0; i < getReaders().size(); i++) {
@@ -136,6 +137,7 @@ public class Library implements Serializable {
             }
             if(k==getReaders().size())
                 throw new SearchException("Nie ma Czytelnika o podanym indeksie!");
+        catalog.getBooks().get(bookTitle).isStatusCheck();
         catalog.getBooks().get(bookTitle).rentBook();
         }
         else

@@ -1,5 +1,6 @@
 package graphicInterface.fxml;
 
+import exceptions.StatusException;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -262,17 +263,27 @@ public class ControllerMainPanel {
     }
 
     @FXML
-    private void handleRentBook(){
+    private void handleRentBook() {
         Book selectedBook = booksTable.getSelectionModel().getSelectedItem();
-        if(selectedBook != null){
-            boolean okClicked = myApp.showBookRentDialog(selectedBook);
-            if(okClicked){
-                refreshTable();
+        try {
+            selectedBook.isStatusCheck();
+            if (selectedBook != null) {
+                boolean okClicked = myApp.showBookRentDialog(selectedBook);
+                if (okClicked) {
+                    refreshTable();
+                }
+            } else {
+                alertToSelectBook();
             }
-        }else {
-            alertToSelectBook();
+        } catch (StatusException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initOwner(myApp.getPrimaryStage());
+            alert.setTitle("Uwaga!");
+            alert.setHeaderText(e.getMessage());
+            alert.showAndWait();
         }
     }
+
 
     @FXML
     private void handleAddBook(){
