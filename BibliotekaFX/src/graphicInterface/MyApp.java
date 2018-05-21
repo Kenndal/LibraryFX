@@ -10,6 +10,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -22,10 +25,10 @@ import logic.Reader;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Optional;
 
 public class MyApp extends Application implements Serializable {
 
-    private MyPreloader preloaderStage;
     private Stage primaryStage;
     private BorderPane rootLayout;
     private Library library = new Library();
@@ -44,16 +47,30 @@ public class MyApp extends Application implements Serializable {
 
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("BibliotekaFX");
-        this.primaryStage.getIcons().add(new Image("file:resources/Bicon.png"));
-        this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            public void handle(WindowEvent we) {
+        this.primaryStage.getIcons().add(new Image("file:src/resources/Bicon.png"));
+        this.primaryStage.setOnCloseRequest(event -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initOwner(primaryStage);
+            alert.setTitle("Zamykanie aplikacji");
+            alert.setHeaderText("Czy chcesz zapisać zmiany?");
+            alert.setContentText("Wybierz jedną opcję.");
+            ButtonType buttonTypeSave = new ButtonType("Zapisz");
+            ButtonType buttonTypeNotSave = new ButtonType("Nie zapisuj");
+            ButtonType buttonTypeCancel = new ButtonType("Anuluj", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+            alert.getButtonTypes().setAll(buttonTypeSave,buttonTypeNotSave, buttonTypeCancel);
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.get() == buttonTypeSave){
                 try {
-                    library.saveReadersToFile("resources/czytelnicy.bin");
-                    library.saveCatalogToFile("resources/biblioteczka.bin");
+                    library.saveCatalogToFile("src/resources/biblioteczka.bin");
+                    library.saveReadersToFile("src/resources/czytelnicy.bin");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }else if(result.get() == buttonTypeNotSave){
 
+            }else if(result.get() == buttonTypeCancel){
+                event.consume();
             }
         });
         initRootLayout();
@@ -65,8 +82,8 @@ public class MyApp extends Application implements Serializable {
 
 
     public MyApp() throws IOException, ClassNotFoundException {
-        library.loadCatalog("resources/biblioteczka.bin");
-        library.loadReaders("resources/czytelnicy.bin");
+        library.loadCatalog("src/resources/biblioteczka.bin");
+        library.loadReaders("src/resources/czytelnicy.bin");
         booksData.addAll(library.getCatalog().getBooks().values());
         readersData.addAll(library.getReaders());
     }
@@ -148,7 +165,7 @@ public class MyApp extends Application implements Serializable {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
             dialogStage.setResizable(false);
-            dialogStage.getIcons().add(new Image("file:resources/Bicon.png"));
+            dialogStage.getIcons().add(new Image("file:src/resources/Bicon.png"));
 
 
             // Set the person into the controller.
@@ -182,7 +199,7 @@ public class MyApp extends Application implements Serializable {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
             dialogStage.setResizable(false);
-            dialogStage.getIcons().add(new Image("file:resources/Bicon.png"));
+            dialogStage.getIcons().add(new Image("file:src/resources/Bicon.png"));
 
             // Set the person into the controller.
             ControllerRentPanel controller = loader.getController();
@@ -216,7 +233,7 @@ public class MyApp extends Application implements Serializable {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
             dialogStage.setResizable(false);
-            dialogStage.getIcons().add(new Image("file:resources/Bicon.png"));
+            dialogStage.getIcons().add(new Image("file:src/resources/Bicon.png"));
 
             // Set the person into the controller.
             ControllerReaderPanel controller = loader.getController();
@@ -250,4 +267,3 @@ public class MyApp extends Application implements Serializable {
         launch(MyApp.class,args);
     }
 }
-

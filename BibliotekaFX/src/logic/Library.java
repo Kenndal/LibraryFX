@@ -173,8 +173,14 @@ public class Library implements Serializable {
     // zapis katalogu do pliku
     public void saveCatalogToFile(String nazwaPliku)throws IOException{
         ObjectOutputStream toSave = null;
+        File file = new File(nazwaPliku);
+        if (!file.exists()) {
+            if (file.getParentFile() != null)
+                file.getParentFile().mkdirs();  // Creates parent directories if not exists.
+            file.createNewFile();
+        }
         try {
-            FileOutputStream outputStream = new FileOutputStream(nazwaPliku);
+            FileOutputStream outputStream = new FileOutputStream(file);
             toSave = new ObjectOutputStream(outputStream);
             toSave.writeObject(catalog);
         }catch (IOException ex) {
@@ -189,8 +195,9 @@ public class Library implements Serializable {
     // odczyt katalogu z pliku
     public void loadCatalog(String nazwaPliku)throws IOException,ClassNotFoundException{
         ObjectInputStream toLoad=null;
+        File file = new File(nazwaPliku);
         try{
-            FileInputStream input = new FileInputStream(nazwaPliku);
+            FileInputStream input = new FileInputStream(file);
             toLoad=new ObjectInputStream(input);
             catalog =(Catalog) toLoad.readObject();
         } catch (EOFException ex) {
@@ -205,8 +212,14 @@ public class Library implements Serializable {
     // zapis Czytelnikow do pliku
     public void saveReadersToFile(String nazwaPliku)throws IOException{
         ObjectOutputStream toSave = null;
+        File file = new File(nazwaPliku);
+        if (!file.exists()) {
+            if (file.getParentFile() != null)
+                file.getParentFile().mkdirs();  // Creates parent directories if not exists.
+            file.createNewFile();
+        }
         try {
-            FileOutputStream outputStream = new FileOutputStream(nazwaPliku);
+            FileOutputStream outputStream = new FileOutputStream(file);
             toSave = new ObjectOutputStream(outputStream);
             toSave.writeObject(readers);
         }catch (IOException ex) {
@@ -221,8 +234,9 @@ public class Library implements Serializable {
     // odczyt czytelnikow z pliku
     public void loadReaders(String nazwaPliku)throws IOException,ClassNotFoundException{
         ObjectInputStream toLoad=null;
+        File file = new File(nazwaPliku);
         try{
-            FileInputStream input = new FileInputStream(nazwaPliku);
+            FileInputStream input = new FileInputStream(file);
             toLoad=new ObjectInputStream(input);
             readers = (ArrayList<Reader>) toLoad.readObject();
         } catch (EOFException ex) {

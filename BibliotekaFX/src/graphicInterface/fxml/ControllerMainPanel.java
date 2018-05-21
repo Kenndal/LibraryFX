@@ -1,6 +1,7 @@
 package graphicInterface.fxml;
 
 import exceptions.StatusException;
+import graphicInterface.MyApp;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -11,7 +12,6 @@ import logic.Library;
 import logic.Book;
 import logic.Reader;
 import exceptions.AddingException;
-import graphicInterface.MyApp;
 import exceptions.RemovingException;
 
 import java.util.Optional;
@@ -266,8 +266,8 @@ public class ControllerMainPanel {
     private void handleRentBook() {
         Book selectedBook = booksTable.getSelectionModel().getSelectedItem();
         try {
-            selectedBook.isStatusCheck();
             if (selectedBook != null) {
+                selectedBook.isStatusCheck();
                 boolean okClicked = myApp.showBookRentDialog(selectedBook);
                 if (okClicked) {
                     refreshTable();
