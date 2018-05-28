@@ -37,6 +37,10 @@ public class MyApp extends Application implements Serializable {
     private FilteredList<Book> filteredDataBook = new FilteredList<>(booksData, p -> true);
     private FilteredList<Reader> filteredDataReader = new FilteredList<>(readersData, p -> true);
 
+    private Image iconImage  = new Image(String.valueOf(MyApp.class.getResource("resources/Bicon.png")));
+
+    private String catalogURL = String.valueOf(MyApp.class.getResource("resources/biblioteczka.bin"));
+    private String readersURL = String.valueOf(MyApp.class.getResource("resources/czytelnicy.bin"));
 
     public Library getLibrary() {
         return library;
@@ -47,7 +51,7 @@ public class MyApp extends Application implements Serializable {
 
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("BibliotekaFX");
-        this.primaryStage.getIcons().add(new Image("file:src/resources/Bicon.png"));
+        this.primaryStage.getIcons().add(iconImage);
         this.primaryStage.setOnCloseRequest(event -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.initOwner(primaryStage);
@@ -62,8 +66,8 @@ public class MyApp extends Application implements Serializable {
             Optional<ButtonType> result = alert.showAndWait();
             if(result.get() == buttonTypeSave){
                 try {
-                    library.saveCatalogToFile("src/resources/biblioteczka.bin");
-                    library.saveReadersToFile("src/resources/czytelnicy.bin");
+                    library.saveCatalogToFile(catalogURL);
+                    library.saveReadersToFile(readersURL);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -82,10 +86,22 @@ public class MyApp extends Application implements Serializable {
 
 
     public MyApp() throws IOException, ClassNotFoundException {
-        library.loadCatalog("src/resources/biblioteczka.bin");
-        library.loadReaders("src/resources/czytelnicy.bin");
+        library.loadCatalog(MyApp.class.getResourceAsStream("resources/biblioteczka.bin"));
+        library.loadReaders(MyApp.class.getResourceAsStream("resources/czytelnicy.bin"));
         booksData.addAll(library.getCatalog().getBooks().values());
         readersData.addAll(library.getReaders());
+    }
+
+    public Image getIconImage() {
+        return iconImage;
+    }
+
+    public String getCatalogURL() {
+        return catalogURL;
+    }
+
+    public String getReadersURL() {
+        return readersURL;
     }
 
     public FilteredList<Book> getFilteredDataBook() {
@@ -142,14 +158,6 @@ public class MyApp extends Application implements Serializable {
         }
     }
 
-    /**
-     * Opens a dialog to edit details for the specified person. If the user
-     * clicks OK, the changes are saved into the provided person object and true
-     * is returned.
-     *
-     * @param book the person object to be edited
-     * @return true if the user clicked OK, false otherwise.
-     */
     public boolean showBookEditDialog(Book book) {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
@@ -165,7 +173,7 @@ public class MyApp extends Application implements Serializable {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
             dialogStage.setResizable(false);
-            dialogStage.getIcons().add(new Image("file:src/resources/Bicon.png"));
+            dialogStage.getIcons().add(iconImage);
 
 
             // Set the person into the controller.
@@ -199,7 +207,7 @@ public class MyApp extends Application implements Serializable {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
             dialogStage.setResizable(false);
-            dialogStage.getIcons().add(new Image("file:src/resources/Bicon.png"));
+            dialogStage.getIcons().add(iconImage);
 
             // Set the person into the controller.
             ControllerRentPanel controller = loader.getController();
@@ -233,7 +241,7 @@ public class MyApp extends Application implements Serializable {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
             dialogStage.setResizable(false);
-            dialogStage.getIcons().add(new Image("file:src/resources/Bicon.png"));
+            dialogStage.getIcons().add(iconImage);
 
             // Set the person into the controller.
             ControllerReaderPanel controller = loader.getController();

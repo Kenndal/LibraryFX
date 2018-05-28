@@ -9,7 +9,6 @@ import exceptions.StatusException;
 import java.util.*;
 import java.util.logging.Logger;
 import java.io.*;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -171,20 +170,16 @@ public class Library implements Serializable {
 
 
     // zapis katalogu do pliku
-    public void saveCatalogToFile(String nazwaPliku)throws IOException{
+    public void saveCatalogToFile(String uml)throws IOException{
         ObjectOutputStream toSave = null;
-        File file = new File(nazwaPliku);
-        if (!file.exists()) {
-            if (file.getParentFile() != null)
-                file.getParentFile().mkdirs();  // Creates parent directories if not exists.
-            file.createNewFile();
-        }
+        File file = new File(uml);
         try {
             FileOutputStream outputStream = new FileOutputStream(file);
             toSave = new ObjectOutputStream(outputStream);
             toSave.writeObject(catalog);
         }catch (IOException ex) {
-            System.out.println("Blad w zapisie do pliku '" + nazwaPliku + "'");
+            System.out.println("Blad w zapisie do pliku 'biblioteczka.bin'");
+            ex.getMessage();
         }
         finally {
             if(toSave!=null)
@@ -193,12 +188,10 @@ public class Library implements Serializable {
     }
 
     // odczyt katalogu z pliku
-    public void loadCatalog(String nazwaPliku)throws IOException,ClassNotFoundException{
+    public void loadCatalog(InputStream inputStream)throws IOException,ClassNotFoundException{
         ObjectInputStream toLoad=null;
-        File file = new File(nazwaPliku);
         try{
-            FileInputStream input = new FileInputStream(file);
-            toLoad=new ObjectInputStream(input);
+            toLoad = new ObjectInputStream(inputStream);
             catalog =(Catalog) toLoad.readObject();
         } catch (EOFException ex) {
             System.out.println("Koniec pliku");
@@ -210,20 +203,15 @@ public class Library implements Serializable {
     }
 
     // zapis Czytelnikow do pliku
-    public void saveReadersToFile(String nazwaPliku)throws IOException{
+    public void saveReadersToFile(String uml)throws IOException{
         ObjectOutputStream toSave = null;
-        File file = new File(nazwaPliku);
-        if (!file.exists()) {
-            if (file.getParentFile() != null)
-                file.getParentFile().mkdirs();  // Creates parent directories if not exists.
-            file.createNewFile();
-        }
         try {
-            FileOutputStream outputStream = new FileOutputStream(file);
+            OutputStream outputStream = new FileOutputStream(uml);
             toSave = new ObjectOutputStream(outputStream);
             toSave.writeObject(readers);
         }catch (IOException ex) {
-            System.out.println("Blad w zapisie do pliku '" + nazwaPliku + "'");
+            System.out.println(String.valueOf(uml));
+            System.out.println("Blad w zapisie do pliku 'czytelnicy.bin'");
         }
         finally {
             if(toSave!=null)
@@ -232,12 +220,10 @@ public class Library implements Serializable {
     }
 
     // odczyt czytelnikow z pliku
-    public void loadReaders(String nazwaPliku)throws IOException,ClassNotFoundException{
+    public void loadReaders(InputStream inputStream)throws IOException,ClassNotFoundException{
         ObjectInputStream toLoad=null;
-        File file = new File(nazwaPliku);
         try{
-            FileInputStream input = new FileInputStream(file);
-            toLoad=new ObjectInputStream(input);
+            toLoad = new ObjectInputStream(inputStream);
             readers = (ArrayList<Reader>) toLoad.readObject();
         } catch (EOFException ex) {
             System.out.println("Koniec pliku");
@@ -259,12 +245,6 @@ public class Library implements Serializable {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 
-        Library biblioteka = new Library();
-        biblioteka.saveCatalogToFile("resources/biblioteczka.bin");
-        biblioteka.saveReadersToFile("resources/czytelnicy.bin");
-        biblioteka.loadCatalog("resources/biblioteczka.bin");
-        biblioteka.loadReaders("resources/czytelnicy.bin");
-        biblioteka.getCatalog().printBooks();
 
     }
 }

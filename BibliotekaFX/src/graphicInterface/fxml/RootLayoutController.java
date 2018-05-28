@@ -22,10 +22,10 @@ public class RootLayoutController {
     @FXML
     private void handleSave(){
         try {
-            myApp.getLibrary().saveCatalogToFile("src/resources/biblioteczka.bin");
-            myApp.getLibrary().saveReadersToFile("src/resources/czytelnicy.bin");
+            myApp.getLibrary().saveCatalogToFile(myApp.getCatalogURL());
+            myApp.getLibrary().saveReadersToFile(myApp.getReadersURL());
             Alert alert = new Alert(AlertType.INFORMATION);
-            ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("file:src/resources/Bicon.png"));
+            ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(myApp.getIconImage());
             alert.setTitle("Biblioteka");
             alert.setHeaderText("Zapisano.");
             alert.showAndWait();
@@ -39,7 +39,7 @@ public class RootLayoutController {
     @FXML
     private void handleAbout(){
         Alert alert = new Alert(AlertType.INFORMATION);
-        ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("file:src/resources/Bicon.png"));
+        ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(myApp.getIconImage());
         alert.setTitle("Biblioteka");
         alert.setHeaderText("Informacje");
         alert.setContentText("Jedno wielkie: KEK \nBo przecież kochamy to KEK <3 \nJak nie bedzie z tego 5.0 to będę smutny :(" +
