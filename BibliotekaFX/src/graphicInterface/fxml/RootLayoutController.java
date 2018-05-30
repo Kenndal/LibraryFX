@@ -22,8 +22,8 @@ public class RootLayoutController {
     @FXML
     private void handleSave(){
         try {
-            myApp.getLibrary().saveCatalogToFile(myApp.getCatalogURL());
-            myApp.getLibrary().saveReadersToFile(myApp.getReadersURL());
+            myApp.getLibrary().saveCatalogToFile();
+            myApp.getLibrary().saveReadersToFile();
             Alert alert = new Alert(AlertType.INFORMATION);
             ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(myApp.getIconImage());
             alert.setTitle("Biblioteka");

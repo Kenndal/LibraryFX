@@ -6,6 +6,7 @@ import exceptions.SearchException;
 import exceptions.RemovingException;
 import exceptions.StatusException;
 
+import java.nio.file.Files;
 import java.util.*;
 import java.util.logging.Logger;
 import java.io.*;
@@ -51,8 +52,15 @@ public class Library implements Serializable {
 
     }
 
-    public void removeReader(String readerIndex) {
+    public void removeReader(String readerIndex) throws IOException {
+        /*
+        String tempPath;
+        tempPath = fingReader(readerIndex).getImagePath();
+        File file = new File(tempPath);
+        Files.delete(file.toPath());
+        */
         readers.remove(fingReader(readerIndex));
+
     }
 
     private String addIndexReader(String firstName, String lastName) {
@@ -170,15 +178,16 @@ public class Library implements Serializable {
 
 
     // zapis katalogu do pliku
-    public void saveCatalogToFile(String uml)throws IOException{
+    public void saveCatalogToFile()throws IOException{
         ObjectOutputStream toSave = null;
-        File file = new File(uml);
+        File file = new File(Library.class.getResource("resources/catalog.bin").getPath());
         try {
             FileOutputStream outputStream = new FileOutputStream(file);
             toSave = new ObjectOutputStream(outputStream);
             toSave.writeObject(catalog);
         }catch (IOException ex) {
-            System.out.println("Blad w zapisie do pliku 'biblioteczka.bin'");
+            System.out.println(file.getPath());
+            System.out.println("Blad w zapisie do pliku 'catalog.bin'");
             ex.getMessage();
         }
         finally {
@@ -188,8 +197,9 @@ public class Library implements Serializable {
     }
 
     // odczyt katalogu z pliku
-    public void loadCatalog(InputStream inputStream)throws IOException,ClassNotFoundException{
-        ObjectInputStream toLoad=null;
+    public void loadCatalog()throws IOException,ClassNotFoundException{
+        InputStream inputStream = Library.class.getResourceAsStream("resources/catalog.bin");
+        ObjectInputStream toLoad = null;
         try{
             toLoad = new ObjectInputStream(inputStream);
             catalog =(Catalog) toLoad.readObject();
@@ -203,15 +213,15 @@ public class Library implements Serializable {
     }
 
     // zapis Czytelnikow do pliku
-    public void saveReadersToFile(String uml)throws IOException{
+    public void saveReadersToFile()throws IOException{
         ObjectOutputStream toSave = null;
+        File file = new File(Library.class.getResource("resources/readers.bin").getPath());
         try {
-            OutputStream outputStream = new FileOutputStream(uml);
+            OutputStream outputStream = new FileOutputStream(file);
             toSave = new ObjectOutputStream(outputStream);
             toSave.writeObject(readers);
         }catch (IOException ex) {
-            System.out.println(String.valueOf(uml));
-            System.out.println("Blad w zapisie do pliku 'czytelnicy.bin'");
+            System.out.println("Blad w zapisie do pliku 'readers.bin'");
         }
         finally {
             if(toSave!=null)
@@ -220,7 +230,8 @@ public class Library implements Serializable {
     }
 
     // odczyt czytelnikow z pliku
-    public void loadReaders(InputStream inputStream)throws IOException,ClassNotFoundException{
+    public void loadReaders()throws IOException,ClassNotFoundException{
+        InputStream inputStream = Library.class.getResourceAsStream("resources/readers.bin");
         ObjectInputStream toLoad=null;
         try{
             toLoad = new ObjectInputStream(inputStream);
@@ -244,7 +255,10 @@ public class Library implements Serializable {
     }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-
-
+        Library library = new Library();
+        library.saveCatalogToFile();
+        library.saveReadersToFile();
+        library.loadCatalog();
+        library.loadReaders();
     }
 }

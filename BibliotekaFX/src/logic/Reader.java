@@ -4,8 +4,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import exceptions.AddingException;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -18,7 +21,7 @@ public class Reader implements Serializable {
     private String email;
     private String indexReader;
     private Boolean booksHaveStatus;
-    private String image;
+    private String imagePath;
     private Map<String, Book> rentBooks = new HashMap<String, Book>();
     // konstruktor
     public Reader(String firstName, String lastName, String birthday, String email) throws AddingException {
@@ -81,16 +84,16 @@ public class Reader implements Serializable {
         return new SimpleStringProperty(indexReader);
     }
 
-    public String getImage() {
-        return image;
+    public String getImagePath() {
+        return imagePath;
     }
 
     public StringProperty getImageProperty() {
-        return new SimpleStringProperty(image);
+        return new SimpleStringProperty(imagePath);
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public void setFirstName(String firstName) throws AddingException {
@@ -176,4 +179,18 @@ public class Reader implements Serializable {
             return new SimpleStringProperty("Nie");
     }
 
+    public void copyImage(String sourcePath, String destPath) throws IOException, AddingException {
+        File source = new File(sourcePath);
+        File dest = new File(destPath + "/" + "img" +  source.getName());
+        if(dest.exists()){
+           throw new AddingException("Zmień nazwe zdjęcia, ta nie jest możliwa.");
+        }
+        try {
+            Files.copy(source.toPath(),dest.toPath());
+            imagePath = dest.getPath();
+        } catch (IOException e) {
+            System.out.println("Coś poszło nie tak :(");
+            e.printStackTrace();
+        }
+    }
 }

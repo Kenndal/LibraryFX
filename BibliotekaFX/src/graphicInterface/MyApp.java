@@ -39,9 +39,6 @@ public class MyApp extends Application implements Serializable {
 
     private Image iconImage  = new Image(String.valueOf(MyApp.class.getResource("resources/Bicon.png")));
 
-    private String catalogURL = String.valueOf(MyApp.class.getResource("resources/biblioteczka.bin"));
-    private String readersURL = String.valueOf(MyApp.class.getResource("resources/czytelnicy.bin"));
-
     public Library getLibrary() {
         return library;
     }
@@ -66,8 +63,8 @@ public class MyApp extends Application implements Serializable {
             Optional<ButtonType> result = alert.showAndWait();
             if(result.get() == buttonTypeSave){
                 try {
-                    library.saveCatalogToFile(catalogURL);
-                    library.saveReadersToFile(readersURL);
+                    library.saveCatalogToFile();
+                    library.saveReadersToFile();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -86,8 +83,8 @@ public class MyApp extends Application implements Serializable {
 
 
     public MyApp() throws IOException, ClassNotFoundException {
-        library.loadCatalog(MyApp.class.getResourceAsStream("resources/biblioteczka.bin"));
-        library.loadReaders(MyApp.class.getResourceAsStream("resources/czytelnicy.bin"));
+        library.loadCatalog();
+        library.loadReaders();
         booksData.addAll(library.getCatalog().getBooks().values());
         readersData.addAll(library.getReaders());
     }
@@ -96,13 +93,6 @@ public class MyApp extends Application implements Serializable {
         return iconImage;
     }
 
-    public String getCatalogURL() {
-        return catalogURL;
-    }
-
-    public String getReadersURL() {
-        return readersURL;
-    }
 
     public FilteredList<Book> getFilteredDataBook() {
         return filteredDataBook;
@@ -248,6 +238,7 @@ public class MyApp extends Application implements Serializable {
             controller.setDialogStage(dialogStage);
             controller.setLibrary(library);
             controller.setReader(reader);
+            controller.setMyApp(this);
 
 
             // Show the dialog and wait until the user closes it

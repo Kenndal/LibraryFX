@@ -1,9 +1,11 @@
 package graphicInterface.fxml;
 
+import graphicInterface.MyApp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -16,6 +18,7 @@ import exceptions.AddingException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 
 public class ControllerReaderPanel {
@@ -67,7 +70,7 @@ public class ControllerReaderPanel {
     private Reader reader;
     private Library library;
     private ObservableList<Book> booksData = FXCollections.observableArrayList();
-
+    private MyApp myApp;
 
 
     @FXML
@@ -76,10 +79,6 @@ public class ControllerReaderPanel {
         authorColumn.setCellValueFactory(cellData -> cellData.getValue().getAuthorProperty());
         genreColumn.setCellValueFactory(cellData -> cellData.getValue().getGenreProperty());
         indexColumn.setCellValueFactory(cellData -> cellData.getValue().getIndexBookProperty());
-
-
-
-
     }
 
 
@@ -93,6 +92,10 @@ public class ControllerReaderPanel {
         this.closeClicked = closeClicked;
     }
 
+    public void setMyApp(MyApp myApp) {
+        this.myApp = myApp;
+    }
+
     public void setReader(Reader reader) {
         this.reader = reader;
 
@@ -102,13 +105,13 @@ public class ControllerReaderPanel {
         readerIndexTextField.setText(reader.getIndexReader());
         mailTextField.setText(reader.getEmail());
 
-            if (reader.getImage() != null) {
+            if (reader.getImagePath() != null) {
                 try {
-                    FileInputStream input = new FileInputStream(reader.getImage());
+                    FileInputStream input = new FileInputStream(reader.getImagePath());
                     readerImage.setImage(new Image(input));
                 } catch (FileNotFoundException e) {
                     alertImage();
-            }
+                }
             }
 
 
@@ -184,13 +187,20 @@ public class ControllerReaderPanel {
         File file = fileChooser.showOpenDialog(this.dialogStage);
 
         if(file != null){
-              reader.setImage(file.toString());
+            try {
+                reader.copyImage(file.getPath() ,myApp.getClass().getResource("resources").getPath());
                 try {
-                    FileInputStream input = new FileInputStream(reader.getImage());
+                    FileInputStream input = new FileInputStream(reader.getImagePath());
                     readerImage.setImage(new Image(input));
                 } catch (FileNotFoundException e) {
                     alertImage();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (AddingException e) {
+                alertNameImage(e.getMessage());
+            }
+
         }
 
     }
@@ -207,7 +217,16 @@ public class ControllerReaderPanel {
         alert.setHeight(400);
         alert.showAndWait();
 
-        reader.setImage("");
+        reader.setImagePath(null);
+    }
+
+    private void alertNameImage(String exceptionInformations){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initOwner(this.dialogStage);
+        alert.setTitle("Uwaga!");
+        alert.setHeaderText(exceptionInformations);
+        alert.showAndWait();
+        reader.setImagePath(null);
     }
 }
 

@@ -14,6 +14,7 @@ import logic.Reader;
 import exceptions.AddingException;
 import exceptions.RemovingException;
 
+import java.io.IOException;
 import java.util.Optional;
 
 
@@ -326,11 +327,16 @@ public class ControllerMainPanel {
             Optional<ButtonType> result = alert.showAndWait();
             if(result.get() == ButtonType.OK) {
                 library.returnAllBooks(selectedReader.getIndexReader());
-                library.removeReader(selectedReader.getIndexReader());
-                myApp.getReadersData().remove(selectedReader);
-                ObservableList<Book> booksData = myApp.getBooksData().sorted();
-                myApp.getBooksData().removeAll();
-                myApp.getBooksData().setAll(booksData);
+                try {
+                    library.removeReader(selectedReader.getIndexReader());
+                    myApp.getReadersData().remove(selectedReader);
+                    ObservableList<Book> booksData = myApp.getBooksData().sorted();
+                    myApp.getBooksData().removeAll();
+                    myApp.getBooksData().setAll(booksData);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
         else {
