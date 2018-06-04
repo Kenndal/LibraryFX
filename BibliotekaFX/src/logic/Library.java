@@ -8,7 +8,6 @@ import exceptions.StatusException;
 
 import java.nio.file.Files;
 import java.util.*;
-import java.util.logging.Logger;
 import java.io.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -24,13 +23,19 @@ public class Library implements Serializable {
     // catalog
     private Catalog catalog = new Catalog();
 
-        // lista czytelnikow
-        private ArrayList<Reader> readers = new ArrayList<Reader>();
+    // lista czytelnikow
+    private ArrayList<Reader> readers = new ArrayList<Reader>();
 
-        // dodatkowe
-        private Random random = new Random();
-        private static Logger log = Logger.getLogger(Library.class.getName());
-        // gettery
+    // dodatkowe
+    private Random random = new Random();
+    // files to remove after close
+    private ArrayList<String> fileToRemove =  new ArrayList<>();
+    // gettery
+
+
+    public ArrayList<String> getFileToRemove() {
+        return fileToRemove;
+    }
 
     public Catalog getCatalog() {
         return catalog;
@@ -43,24 +48,15 @@ public class Library implements Serializable {
     // metody wypożyczenia, zwroty, dodawanie czytleników
 
     public void addReader(String firstName, String lastName, String birthday, String email) throws AddingException {
-
-
-        Reader czytelnik = new Reader(firstName, lastName, birthday, email);
-        czytelnik.setBooksHaveStatus(false);
-        czytelnik.addIndeksReader(addIndexReader(czytelnik.getFirstName(), czytelnik.getLastName()));
-        readers.add(czytelnik);
-
+        Reader reader = new Reader(firstName, lastName, birthday, email);
+        reader.setBooksHaveStatus(false);
+        reader.addIndeksReader(addIndexReader(reader.getFirstName(), reader.getLastName()));
+        readers.add(reader);
     }
 
     public void removeReader(String readerIndex) throws IOException {
-        /*
-        String tempPath;
-        tempPath = fingReader(readerIndex).getImagePath();
-        File file = new File(tempPath);
-        Files.delete(file.toPath());
-        */
+        fileToRemove.add(fingReader(readerIndex).getImagePath());
         readers.remove(fingReader(readerIndex));
-
     }
 
     private String addIndexReader(String firstName, String lastName) {
@@ -180,13 +176,16 @@ public class Library implements Serializable {
     // zapis katalogu do pliku
     public void saveCatalogToFile()throws IOException{
         ObjectOutputStream toSave = null;
-        File file = new File(Library.class.getResource("resources/catalog.bin").getPath());
+        File file = new File(System.getProperty("user.home") + "/BibliotekaFX/catalog.bin");
+        if(!file.exists()){
+            file.createNewFile();
+        }
         try {
             FileOutputStream outputStream = new FileOutputStream(file);
             toSave = new ObjectOutputStream(outputStream);
             toSave.writeObject(catalog);
         }catch (IOException ex) {
-            System.out.println(file.getPath());
+            System.out.println(System.getProperty("user.home") + "/BibliotekaFX/catalog.bin");
             System.out.println("Blad w zapisie do pliku 'catalog.bin'");
             ex.getMessage();
         }
@@ -198,9 +197,10 @@ public class Library implements Serializable {
 
     // odczyt katalogu z pliku
     public void loadCatalog()throws IOException,ClassNotFoundException{
-        InputStream inputStream = Library.class.getResourceAsStream("resources/catalog.bin");
+        File file = new File(System.getProperty("user.home") + "/BibliotekaFX/catalog.bin");
         ObjectInputStream toLoad = null;
         try{
+            FileInputStream inputStream = new FileInputStream(file);
             toLoad = new ObjectInputStream(inputStream);
             catalog =(Catalog) toLoad.readObject();
         } catch (EOFException ex) {
@@ -215,7 +215,10 @@ public class Library implements Serializable {
     // zapis Czytelnikow do pliku
     public void saveReadersToFile()throws IOException{
         ObjectOutputStream toSave = null;
-        File file = new File(Library.class.getResource("resources/readers.bin").getPath());
+        File file = new File(System.getProperty("user.home") + "/BibliotekaFX/readers.bin");
+        if(!file.exists()){
+            file.createNewFile();
+        }
         try {
             OutputStream outputStream = new FileOutputStream(file);
             toSave = new ObjectOutputStream(outputStream);
@@ -231,9 +234,10 @@ public class Library implements Serializable {
 
     // odczyt czytelnikow z pliku
     public void loadReaders()throws IOException,ClassNotFoundException{
-        InputStream inputStream = Library.class.getResourceAsStream("resources/readers.bin");
+        File file = new File(System.getProperty("user.home") + "/BibliotekaFX/readers.bin");
         ObjectInputStream toLoad=null;
         try{
+            FileInputStream inputStream = new FileInputStream(file);
             toLoad = new ObjectInputStream(inputStream);
             readers = (ArrayList<Reader>) toLoad.readObject();
         } catch (EOFException ex) {
@@ -242,6 +246,17 @@ public class Library implements Serializable {
         finally{
             if(toLoad!=null)
                 toLoad.close();
+        }
+    }
+
+    public void libraryClose(){
+        for (String aFileToRemove : fileToRemove) {
+            File file = new File(aFileToRemove);
+            try {
+                Files.delete(file.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

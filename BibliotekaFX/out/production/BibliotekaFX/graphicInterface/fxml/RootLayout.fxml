@@ -25,6 +25,7 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Pomoc">
                     <items>
+                  <MenuItem fx:id="topKek" mnemonicParsing="false" onAction="#handleKEK" text="TopKek" />
                         <MenuItem mnemonicParsing="false" onAction="#handleAbout" text="Informacje" />
                     </items>
                 </Menu>

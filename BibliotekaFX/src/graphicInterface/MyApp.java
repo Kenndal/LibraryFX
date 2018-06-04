@@ -38,6 +38,7 @@ public class MyApp extends Application implements Serializable {
     private FilteredList<Reader> filteredDataReader = new FilteredList<>(readersData, p -> true);
 
     private Image iconImage  = new Image(String.valueOf(MyApp.class.getResource("resources/Bicon.png")));
+    private Image topKekImage = new Image(String.valueOf(MyApp.class.getResource("resources/GraphicDesign.jpg")));
 
     public Library getLibrary() {
         return library;
@@ -63,6 +64,7 @@ public class MyApp extends Application implements Serializable {
             Optional<ButtonType> result = alert.showAndWait();
             if(result.get() == buttonTypeSave){
                 try {
+                    //library.libraryClose();
                     library.saveCatalogToFile();
                     library.saveReadersToFile();
                 } catch (IOException e) {
@@ -93,6 +95,10 @@ public class MyApp extends Application implements Serializable {
         return iconImage;
     }
 
+
+    public Image getTopKekImage() {
+        return topKekImage;
+    }
 
     public FilteredList<Book> getFilteredDataBook() {
         return filteredDataBook;
@@ -256,6 +262,35 @@ public class MyApp extends Application implements Serializable {
         }
     }
 
+    public Boolean showTopKekImage(){
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MyApp.class.getResource("fxml/TopKek.fxml"));
+            AnchorPane page = null;
+            page = (AnchorPane) loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("TopKek");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+            dialogStage.setResizable(false);
+            dialogStage.getIcons().add(iconImage);
+
+
+            TopKekController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setMyApp(this);
+
+            dialogStage.showAndWait();
+
+            return controller.isOkClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
     public Stage getPrimaryStage() {

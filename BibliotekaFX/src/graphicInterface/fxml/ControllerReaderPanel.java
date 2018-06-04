@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Objects;
 
 
 public class ControllerReaderPanel {
@@ -187,8 +188,11 @@ public class ControllerReaderPanel {
         File file = fileChooser.showOpenDialog(this.dialogStage);
 
         if(file != null){
+            if(reader.getImagePath() != null && !Objects.equals(reader.getImagePath(), "")){
+                myApp.getLibrary().getFileToRemove().add(reader.getImagePath());
+            }
             try {
-                reader.copyImage(file.getPath() ,myApp.getClass().getResource("resources").getPath());
+                reader.copyImage(file.getPath() ,System.getProperty("user.home") + "/BibliotekaFX/Images");
                 try {
                     FileInputStream input = new FileInputStream(reader.getImagePath());
                     readerImage.setImage(new Image(input));
