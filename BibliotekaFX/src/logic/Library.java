@@ -7,6 +7,8 @@ import exceptions.RemovingException;
 import exceptions.StatusException;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.io.*;
 import java.io.IOException;
@@ -251,9 +253,8 @@ public class Library implements Serializable {
 
     public void libraryClose(){
         for (String aFileToRemove : fileToRemove) {
-            File file = new File(aFileToRemove);
             try {
-                Files.delete(file.toPath());
+                Files.delete(Paths.get(aFileToRemove));
             } catch (IOException e) {
                 e.printStackTrace();
             }

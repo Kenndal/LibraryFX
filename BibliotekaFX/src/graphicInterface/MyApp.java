@@ -64,7 +64,7 @@ public class MyApp extends Application implements Serializable {
             Optional<ButtonType> result = alert.showAndWait();
             if(result.get() == buttonTypeSave){
                 try {
-                    //library.libraryClose();
+                    library.libraryClose();
                     library.saveCatalogToFile();
                     library.saveReadersToFile();
                 } catch (IOException e) {

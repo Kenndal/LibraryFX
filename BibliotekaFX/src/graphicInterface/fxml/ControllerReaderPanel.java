@@ -107,11 +107,15 @@ public class ControllerReaderPanel {
         mailTextField.setText(reader.getEmail());
 
             if (reader.getImagePath() != null) {
+                FileInputStream input;
                 try {
-                    FileInputStream input = new FileInputStream(reader.getImagePath());
+                    input = new FileInputStream(reader.getImagePath());
                     readerImage.setImage(new Image(input));
+                    input.close();
                 } catch (FileNotFoundException e) {
                     alertImage();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -178,6 +182,7 @@ public class ControllerReaderPanel {
     @FXML
     private void handleAddImage(){
         FileChooser fileChooser = new FileChooser();
+        String tempPath;
 
         // Set extension filter
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
@@ -188,14 +193,17 @@ public class ControllerReaderPanel {
         File file = fileChooser.showOpenDialog(this.dialogStage);
 
         if(file != null){
-            if(reader.getImagePath() != null && !Objects.equals(reader.getImagePath(), "")){
-                myApp.getLibrary().getFileToRemove().add(reader.getImagePath());
-            }
             try {
+                tempPath = reader.getImagePath();
                 reader.copyImage(file.getPath() ,System.getProperty("user.home") + "/BibliotekaFX/Images");
+
+                if(reader.getImagePath() != null && !Objects.equals(reader.getImagePath(), "")){
+                    myApp.getLibrary().getFileToRemove().add(tempPath);
+                }
                 try {
                     FileInputStream input = new FileInputStream(reader.getImagePath());
                     readerImage.setImage(new Image(input));
+                    input.close();
                 } catch (FileNotFoundException e) {
                     alertImage();
                 }
@@ -224,11 +232,11 @@ public class ControllerReaderPanel {
         reader.setImagePath(null);
     }
 
-    private void alertNameImage(String exceptionInformations){
+    private void alertNameImage(String exceptionInformation){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.initOwner(this.dialogStage);
         alert.setTitle("Uwaga!");
-        alert.setHeaderText(exceptionInformations);
+        alert.setHeaderText(exceptionInformation);
         alert.showAndWait();
         reader.setImagePath(null);
     }
