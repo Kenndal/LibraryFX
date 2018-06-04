@@ -180,6 +180,7 @@ public class Library implements Serializable {
         ObjectOutputStream toSave = null;
         File file = new File(System.getProperty("user.home") + "/BibliotekaFX/catalog.bin");
         if(!file.exists()){
+            Files.createDirectories(Paths.get(file.getParent()));
             file.createNewFile();
         }
         try {
@@ -200,17 +201,18 @@ public class Library implements Serializable {
     // odczyt katalogu z pliku
     public void loadCatalog()throws IOException,ClassNotFoundException{
         File file = new File(System.getProperty("user.home") + "/BibliotekaFX/catalog.bin");
-        ObjectInputStream toLoad = null;
-        try{
-            FileInputStream inputStream = new FileInputStream(file);
-            toLoad = new ObjectInputStream(inputStream);
-            catalog =(Catalog) toLoad.readObject();
-        } catch (EOFException ex) {
-            System.out.println("Koniec pliku");
-        }
-        finally{
-            if(toLoad!=null)
-                toLoad.close();
+        if(file.exists()){
+            ObjectInputStream toLoad = null;
+            try {
+                FileInputStream inputStream = new FileInputStream(file);
+                toLoad = new ObjectInputStream(inputStream);
+                catalog = (Catalog) toLoad.readObject();
+            } catch (EOFException ex) {
+                System.out.println("Koniec pliku");
+            } finally {
+                if (toLoad != null)
+                    toLoad.close();
+            }
         }
     }
 
@@ -219,6 +221,7 @@ public class Library implements Serializable {
         ObjectOutputStream toSave = null;
         File file = new File(System.getProperty("user.home") + "/BibliotekaFX/readers.bin");
         if(!file.exists()){
+            Files.createDirectories(Paths.get(file.getParent()));
             file.createNewFile();
         }
         try {
@@ -237,17 +240,18 @@ public class Library implements Serializable {
     // odczyt czytelnikow z pliku
     public void loadReaders()throws IOException,ClassNotFoundException{
         File file = new File(System.getProperty("user.home") + "/BibliotekaFX/readers.bin");
-        ObjectInputStream toLoad=null;
-        try{
-            FileInputStream inputStream = new FileInputStream(file);
-            toLoad = new ObjectInputStream(inputStream);
-            readers = (ArrayList<Reader>) toLoad.readObject();
-        } catch (EOFException ex) {
-            System.out.println("Koniec pliku");
-        }
-        finally{
-            if(toLoad!=null)
-                toLoad.close();
+        if(file.exists()) {
+            ObjectInputStream toLoad = null;
+            try {
+                FileInputStream inputStream = new FileInputStream(file);
+                toLoad = new ObjectInputStream(inputStream);
+                readers = (ArrayList<Reader>) toLoad.readObject();
+            } catch (EOFException ex) {
+                System.out.println("Koniec pliku");
+            } finally {
+                if (toLoad != null)
+                    toLoad.close();
+            }
         }
     }
 
